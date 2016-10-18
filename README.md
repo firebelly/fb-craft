@@ -1,3 +1,3 @@
-# nb-craft
+# fb-craft
 
-Craft version of natebeaty.com
+Craft version of firebellydesign.com
