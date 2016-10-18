@@ -1,0 +1,10 @@
+{% extends (craft.request.isAjax and not craft.request.isLivePreview) ? "_ajax-layout" : "_layout" %}
+{% set title = "Thoughts" %}
+
+{% block content %}
+	<section class="thoughts-list page-content" data-page="/thoughts" data-page-title="{{ title }}">
+		{% for entry in craft.entries.section('thoughts').limit(5) %}
+			{% include "thoughts/_article" %}
+		{% endfor %}
+	</section>
+{% endblock %}

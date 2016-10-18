@@ -1,0 +1,18 @@
+<?php
+
+$customEnv = array(
+
+    // Path info
+    'basePath' => '/Users/natebeaty/Sites/nb-craft/',
+    'baseUrl'  => 'http://nb-craft.dev/',
+
+    // Database connection info
+    'user'     => 'root',
+    'password' => '',
+    'database' => 'nb_craft',
+
+    // General config settings
+    'general' => array(
+    ),
+
+);
