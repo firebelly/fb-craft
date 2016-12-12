@@ -1,4 +1,34 @@
 {% extends (craft.request.isAjax and not craft.request.isLivePreview) ? "_ajax-layout" : "_layout" %}
 
+{% block aside %}
+  {# {% include "partials/project_nav" %} #}
+{% endblock %}
+
 {% block content %}
+  <header class="section-title">
+    <h1>Good Design<br> for Good <span class="last-word">Reason.<sup>&trade;</sup></span></h1>
+    <h2>We create positive human experiences<br> through beautiful, sustainable design.</h2>
+  </header>
+
+  <section class="portfolio">
+    <ul class="projects filter-items clearfix">
+    {#
+      <% @projects.each do |project| %>
+        <%= cache project do -%>
+          <% quality = (project.slug == 'scb') ? 100 : 80 %>
+          <li class="project interior" data-services="<%= project.service_classes %>" data-industry="<%= project.industry.slug -%>">
+            <article>
+              <div class="project-image lazy" style="background-image:url('/assets/images/gray.gif');" data-original="<%= project.thumbnail_image.thumbnail(geometry: '800x600#c').convert("-quality #{quality}").url if project.thumbnail_image %>"></div>
+              <header>
+                <h1><%= link_to project.title, refinery.projects_project_path(project) %></h1>
+                <%=raw "<h3>#{project.rollover_subtitle}</h3>" unless project.rollover_subtitle.blank? %>
+              </header>
+              <%= link_to(raw("<span>View Project</span>"), refinery.projects_project_path(project), class: 'view-project') %>
+            </article>
+          </li>
+        <% end -%>
+      <% end -%>
+    #}
+    </ul>
+  </section>
 {% endblock %}

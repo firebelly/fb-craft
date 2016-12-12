@@ -1,0 +1,16 @@
+<nav class="project-nav" aria-role="navigation">
+  <ul class="projects clearfix">
+    <% @projects.each do |project| %>
+      <li class="project">
+        <article>
+          <div class="project-image lazy-side" style="background-image:url('/assets/images/gray.gif');" data-original="<%= project.thumbnail_image.thumbnail(geometry: '400x300#c').convert('-quality 75').url if project.thumbnail_image %>"></div>
+          <header>
+            <h1><%= link_to project.title, refinery.projects_project_path(project) %></h1>
+            <%=raw "<h3>#{project.rollover_subtitle}</h3>" unless project.rollover_subtitle.blank? %>
+          </header>
+          <%= link_to(raw(""), refinery.projects_project_path(project), class: 'view-project') %>
+        </article>
+      </li>
+    <% end -%>
+  </ul>
+</nav>

@@ -1,0 +1,81 @@
+// Endeavors
+
+.single.page.endeavors {
+  #page {
+    background: $blue;
+  }
+
+  .content {
+    > .intro {
+      width: 100%;
+      float: none;
+      margin-bottom: 0;
+      text-align: center;
+      padding: ($padding * 6) 25px;
+      .-inner {
+        margin: 0 auto;
+      }
+      .section-title {
+        text-align: center;
+      }
+      .summary p {
+        color: $black-fade;
+        @extend %small-caps;
+      }
+
+      @include min-screen($breakpoint-medium) {
+        padding: ($padding * 12);
+      }
+    }
+  }
+
+  .interior {
+    padding: 0;
+  }
+
+  .child-pages {
+    .page {
+      padding: ($padding * 6) 25px;
+      
+      &:nth-of-type(odd) {
+        background: rgba(255,255,255,.6);
+      }
+
+      @include min-screen($breakpoint-medium) {
+        padding: ($padding * 12) 25px;
+      }
+
+      @include max-screen(1000px) {
+        .one-half {
+          width: 100%;
+          float: none;
+        }
+
+        .intro {
+          padding-left: 0;
+        }
+      }
+    }
+
+    aside {
+      color: $black-fade;
+      @extend %small-caps;
+
+      h1, h2, h3 {
+        color: $black;
+        text-transform: none;
+        letter-spacing: 0;
+      }
+
+      strong {
+        color: $black;
+      }
+
+      @include min-screen($breakpoint-medium) {
+        .-left {
+          padding-right: 25px;
+        }
+      }
+    }
+  }
+}
