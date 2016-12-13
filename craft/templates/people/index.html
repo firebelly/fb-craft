@@ -1,0 +1,48 @@
+{% extends (craft.request.isAjax and not craft.request.isLivePreview) ? "_ajax-layout" : "_layout" %}
+{% set title = entry.title %}
+{# {% if entry.seoDescription %}{% set description = entry.seoDescription %}{% endif %} #}
+{% set bodyClass = 'single page people' %}
+
+{% block content %}
+<section class="content interior grid">
+
+  {% for block in entry.people %}
+    {% set image = block.photo.last() %}
+    <li class="page user-content clearfix person" id="{{ block.slug }}">
+      <div class="bio -left">
+        <header>
+          <h1>{{ block.personName }}</h1>
+          {% if block.personTitle %}
+            <h2>{{ block.personTitle }}</h2>
+          {% endif %}
+          <div class="links">{{ block.socialLinks }}</div>
+        </header>
+        {{ block.bio }}
+      </div>
+      {% if image|length %}
+        <div class="portrait -right" style="background-image: url('{{ image.getUrl('hero') }}');"></div>
+      {% endif %}
+   </li>
+  {% endfor %}
+
+{#   {% for entry in craft.entries.section('people').find() %}
+    {% set image = entry.personImage.last() %}
+    <li class="page user-content clearfix person" id="{{ entry.slug }}">
+      <div class="bio -left">
+        <header>
+          <h1>{{ entry.title }}</h1>
+          {% if entry.personPosition %}
+            <h2>{{ entry.personPosition }}</h2>
+          {% endif %}
+          <div class="links">{{ entry.personDetails }}</div>
+        </header>
+        {{ entry.body }}
+      </div>
+      {% if image|length %}
+        <div class="portrait -right" style="background-image: url('{{ image.getUrl('hero') }}');"></div>
+      {% endif %}
+   </li>
+  {% endfor %}
+ #}
+</section>
+{% endblock %}

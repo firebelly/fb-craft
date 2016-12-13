@@ -41,7 +41,7 @@
   </script>
 </head>
 
-<body class="{% if bodyClass is defined %}{{ bodyClass }}{% else %}index{% endif %}" id="{% if bodyId is defined %}{{ bodyId }}{% else %}work-page{% endif %}">
+<body class="{% if bodyClass is defined %}{{ bodyClass }}{% else %}index{% endif %}" id="{% if bodyId is defined %}{{ bodyId }}{% else %}{{ craft.request.getSegment(1)}}-page{% endif %}">
   <header class="site-header clearfix" aria-role="banner">
     <h1 id="logo">
       <a href="/work">Firebelly</a>
