@@ -31,12 +31,22 @@
 
   .interior {
     padding: 0;
+    .secondary {
+      .secondary-item {
+        h3 {
+          margin-top: 33px;
+          &:first-of-type {
+            margin-top: 0;
+          }
+        }
+      }
+    }
   }
 
   .child-pages {
     .page {
       padding: ($padding * 6) 25px;
-      
+
       &:nth-of-type(odd) {
         background: rgba(255,255,255,.6);
       }

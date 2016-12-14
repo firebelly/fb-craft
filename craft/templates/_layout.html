@@ -19,6 +19,7 @@
   <script src="/assets/js/modernizr-min.js"></script>
 
   {#
+  todo: fb meta tags
   <%= display_meta_tags image: @page_image, og: {
       title: raw(browser_title_custom(yield(:title))),
       description: :description,
@@ -79,9 +80,9 @@
           <span class="tcon-visuallyhidden">toggle project nav</span>
         </button>
       </header>
-      {# <% unless @body_id == 'work-page' && @body_class == 'index' %> #}
+      {% if craft.request.url != '/work' %}
         {% include "partials/_portfolio_sidebar" %}
-      {# <% end %> #}
+      {% endif %}
     </div><!-- END #project-side -->
 
     <section id='page'>

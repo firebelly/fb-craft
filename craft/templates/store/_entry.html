@@ -1,0 +1,70 @@
+{% extends (craft.request.isAjax and not craft.request.isLivePreview) ? "_ajax-layout" : "_layout" %}
+{% set title = entry.title %}
+{# {% if entry.seoDescription %}{% set description = entry.seoDescription %}{% endif %} #}
+{% set bodyClass = 'single' %}
+
+{% block content %}
+  <article class="product single clearfix">
+    <div class="interior">
+      <div class="intro one-half -left clearfix">
+        <div class="-inner">
+          <header class="section-title">
+            <h1>{{ entry.title }}</h1>
+            <h2 class="price">${{ entry.price|trim('0')|trim('.') }}</h2>
+          </header>
+          <div class="summary">
+            {% if entry.body %}
+              <div class="description">{{ entry.body }}</div>
+            {% endif %}
+          </div>
+
+          {# {{ render :partial => '/shared/edit_bug', :locals => { :obj => product, :edit_path => refinery.edit_products_admin_product_path(product) }}} #}
+        </div>
+      </div>
+
+      <aside class="secondary one-half -right">
+          <div class="details">
+            <div class="one-half -left">
+              {% if entry.size %}
+                <div class="secondary-item">
+                  <h3>Size</h3>
+                  {{ entry.size }}
+                </div>
+              {% endif %}
+              {% if entry.productionHighlights %}
+                <div class="secondary-item">
+                  <h3>Production Highlights</h3>
+                  {{ entry.productionHighlights }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="one-half -right">
+              {% if entry.colophon %}
+                <div class="secondary-item">
+                  <h3>Colophon</h3>
+                  {{ entry.colophon }}
+                </div>
+              {% endif %}
+              <div class="actions">
+                <button type="submit" class="submit button">Add To Cart</button>
+              </div>
+            </div>
+          </div>
+      </aside>
+    </div>
+
+    <section>
+      {% if entry.productImages|length %}
+        <div class="slider"><div class="wrap">
+          <ul class="product-images">
+            {% for image in entry.productImages %}
+              <li><img class="lazy" src="/assets/images/gray.gif" data-original="{{ image.getUrl('hero') }}"></li>
+            {% endfor %}
+          </ul>
+        </div></div>
+      {% endif %}
+    </section>
+  </article>
+
+  {% include "partials/_pagination" with {'paginationSection': 'store', 'paginationOrder': 'postDate desc, id asc', 'postName': 'Product'} %}
+{% endblock %}

@@ -2,18 +2,20 @@
   <ul class="projects clearfix">
     {% for entry in craft.entries.section('work') %}
       {% set mainImage = entry.mainImage.last() %}
-      <li class="project">
-        <article>
-          <div class="project-image lazy-side" style="background-image:url('/assets/images/gray.gif');" data-original="{{ mainImage.getUrl('projectThumbSmall') }}"></div>
-          <header>
-            <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
-            {% if entry.rolloverSubtitle %}
-              <h3>{{ entry.rolloverSubtitle }}</h3>
-            {% endif %}
-          </header>
-          <a class="view-project" href="{{ entry.url }}"></a>
-        </article>
-      </li>
+      {% if mainImage|length %}
+        <li class="project">
+          <article>
+              <div class="project-image lazy-side" style="background-image:url('/assets/images/gray.gif');" data-original="{{ mainImage.getUrl('projectThumbSmall') }}"></div>
+            <header>
+              <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+              {% if entry.rolloverSubtitle %}
+                <h3>{{ entry.rolloverSubtitle }}</h3>
+              {% endif %}
+            </header>
+            <a class="view-project" href="{{ entry.url }}"></a>
+          </article>
+        </li>
+      {% endif %}
     {% endfor %}
   </ul>
 </nav>

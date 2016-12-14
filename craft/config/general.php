@@ -17,6 +17,7 @@ return array(
         'omitScriptNameInUrls' => true,
         'enableCsrfProtection' => true,
         'siteUrl' => $customEnv['baseUrl'],
+        'imageDriver' => 'imagick',
         'environmentVariables' => array(
             'baseUrl'  => $customEnv['baseUrl'],
             'basePath' => $customEnv['basePath'],

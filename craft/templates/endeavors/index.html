@@ -20,7 +20,7 @@
 
   <ul class="child-pages">
   {% for block in entry.endeavors %}
-    <li class="page user-content clearfix item" data-page="{{ block.endeavorTitle }}" id="{{ block.endeavorTitle }}">
+    <li class="page user-content clearfix item" data-page="{{ block.endeavorTitle }}" id="{{ block.endeavorTitle|kebab }}">
 
       <div class="intro one-half -left clearfix">
         <div class="-inner">
@@ -50,3 +50,13 @@
 </section>
 {% endblock %}
 
+{% block aside %}
+  <section id="filters" class="divider section-nav">
+    <h1>{{ entry.title }}</h1>
+    <ul class="option-set clearfix smoothscroll">
+      {% for block in entry.endeavors %}
+        <li><a href="#{{ block.endeavorTitle|kebab }}">{{ block.endeavorTitle }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock aside %}

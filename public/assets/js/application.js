@@ -56,7 +56,7 @@ $.gdgr.main = (function() {
     if ($('#work-page.index').length) {
       _scrollToFilters();
       // SEO useless filter header
-      var filterHeader = $('<div class="filter-header">Filter:<p><span class="filter">test</span> </p></div>').prependTo('#page .portfolio');
+      var filterHeader = $('<div class="filter-header">Filter:<p><span class="filter"></span> </p></div>').prependTo('#page .portfolio');
       $('<button type="button" class="tcon tcon-no-animate tcon-menu--xcross xcross-open xcross-small" aria-label="remove project filter"><span class="tcon-menu__lines" aria-hidden="true"></span><span class="tcon-visuallyhidden">remove project filter</span></button>')
       .appendTo(filterHeader.find('p')).on('click', function(e) {
         e.preventDefault();

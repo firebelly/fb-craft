@@ -3,31 +3,40 @@
 {% set title = "Work" %}
 {% set description = "" %}
 
-{% block aside %}
-  {# {% include "partials/project_nav" %} #}
-{% endblock %}
-
 {% block content %}
 <section class="portfolio">
   <ul class="projects filter-items clearfix">
-  	{% for entry in craft.entries.section('work') %}
-			{% set mainImage = entry.mainImage.last() %}
-      {# {{ cache project do }} #}
-        {# <% quality = (entry.slug == 'scb') ? 100 : 80 }} #}
-        <li class="project interior" data-services="{# entry.services #}" data-industry="{# entry.industry.slug #}">
-          <article>
-            <div class="project-image lazy" style="background-image:url('/assets/images/gray.gif');" data-original="{{ mainImage.getUrl('projectThumb') }}"></div>
-            <header>
-              <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
-              {% if entry.rolloverSubtitle %}
-	              <h3>{{ entry.rolloverSubtitle }}</h3>
-              {% endif %}
-            </header>
-            <a class="view-project" href="{{ entry.url }}"><span>View Project</span></a>
-          </article>
-        </li>
-      {# <% end }} #}
+    {% for entry in craft.entries.section('work') %}
+      {% set mainImage = entry.mainImage.last() %}
+      <li class="project interior" data-services="{% for service in entry.services %}{{ service.slug }} {% endfor %}" data-industry="{% for industry in entry.industry %}{{ industry.slug }} {% endfor %}">
+        <article>
+          <div class="project-image lazy" style="background-image:url('/assets/images/gray.gif');" data-original="{{ mainImage.getUrl('projectThumb') }}"></div>
+          <header>
+            <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+            {% if entry.rolloverSubtitle %}
+              <h3>{{ entry.rolloverSubtitle }}</h3>
+            {% endif %}
+          </header>
+          <a class="view-project" href="{{ entry.url }}"><span>View Project</span></a>
+        </article>
+      </li>
     {% endfor %}
   </ul>
 </section>
 {% endblock %}
+
+{% block aside %}
+  <section id="filters" class="divider section-nav interior">
+  <h1>Filter:</h1>
+  <ul class="filter-set">
+    <li class="show-all"><a href="#filter" data-filter="" class="selected">all</a></li>
+    {% set industries = craft.categories.group('industry').find() %}
+    {% for industry in industries %}
+      {% set entryCount = craft.entries.relatedTo(industry).total() %}
+      {% if entryCount > 0 %}
+        <li><a href="#filter" data-filter="{{ industry.slug }}" class="{{ industry.slug }}">{{ industry.title }}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</section>
+{% endblock aside %}

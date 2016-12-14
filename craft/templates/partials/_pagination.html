@@ -1,5 +1,20 @@
-	<div class="pagination">
-		{% if prevEntry %}<a rel="previous" class="previous" href="{{ prevEntry.url }}"><span>Previous</span></a>{% endif %}
-		{% if entry.type == 'journal' %}<a class="archives" href="/journal/archives">Archives</a> {% endif %}
-		{% if nextEntry %}<a rel="next" class="next" href="{{ nextEntry.url }}"><span>Next</span></a>{% endif %}
-	</div>
+  {# {% set params = craft.entries.section('thoughts').order('postDate desc, id asc') %} #}
+  {% set params = craft.entries.section(paginationSection).order(paginationOrder) %}
+  {% set prevEntry = entry.getPrev(params) %}
+  {% if not prevEntry %}
+    {% set prevEntry = params.last() %}
+  {% endif %}
+  {% set nextEntry = entry.getNext(params) %}
+  {% if not nextEntry %}
+    {% set nextEntry = params.first() %}
+  {% endif %}
+  <nav class="footer-pagination">
+    <ul>
+      <li class="prev">
+        <a rel="prev" href="{{ prevEntry.url }}"><span class="arrow">&larr;</span> Previous Post</a>
+      </li>
+      <li class="next">
+        <a rel="next" href="{{ nextEntry.url }}">Next Post <span class="arrow">&rarr;</span></a>
+      </li>
+    </ul>
+  </nav>

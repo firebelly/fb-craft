@@ -10,14 +10,16 @@
   {# <%= cache entry do -%> #}
     <article class="content-block single-project" data-id="{{ entry.id }}">
       <section class="content interior">
-        {% if video|length %}
-          <div class="project-banner video">
-            <video autoplay loop poster="{{ mainImage.getUrl('hero') }}">
-              <source src="{{ video.getUrl() }}" type="video/mp4">
-            </video>
-          </div>
-        {% else %}
-          <div class="project-banner" style="background-image:url({{ mainImage.getUrl('hero') }});"></div>
+        {% if mainImage|length %}
+          {% if video|length %}
+            <div class="project-banner video">
+              <video autoplay loop poster="{{ mainImage.getUrl('hero') }}">
+                <source src="{{ video.getUrl() }}" type="video/mp4">
+              </video>
+            </div>
+          {% else %}
+            <div class="project-banner" style="background-image:url({{ mainImage.getUrl('hero') }});"></div>
+          {% endif %}
         {% endif %}
         <div class="intro clearfix">
           <header class="section-title">
@@ -62,7 +64,7 @@
                 </div>
               {% elseif block.type == "blockImages" %}
                 {% for image in block.images %}
-                  <p><img src="{{ image.getUrl('hero') }}"></p>
+                  <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ image.getUrl('hero') }}"></p>
                 {% endfor %}
               {% endif %}
           {% endfor %}
@@ -70,19 +72,5 @@
       </section>
     </article>
 
-    {# {% set params = craft.entries.section('work') %} #}
-    {% set prevEntry = entry.getPrev() %}
-    {% set nextEntry = entry.getNext() %}
-    {# {% include "partials/_pagination" %} #}
-    <nav class="footer-pagination">
-      <ul>
-        <li class="prev">
-          <a href="{{ prevEntry }}"><span class="arrow">&larr;</span> Previous Project</a>
-        </li>
-        <li class="next">
-          <a href="{{ nextEntry }}">Next Project <span class="arrow">&rarr;</span></a>
-        </li>
-      </ul>
-    </nav>
-  {# <% end %> #}
+    {% include "partials/_pagination" with {'paginationSection': 'work', 'paginationOrder': 'postDate desc, id asc', 'postName': 'Project'} %}
 {% endblock %}

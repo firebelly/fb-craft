@@ -8,7 +8,7 @@
 
   {% for block in entry.people %}
     {% set image = block.photo.last() %}
-    <li class="page user-content clearfix person" id="{{ block.slug }}">
+    <li class="page user-content clearfix person" id="{{ block.personName|kebab }}">
       <div class="bio -left">
         <header>
           <h1>{{ block.personName }}</h1>
@@ -25,24 +25,16 @@
    </li>
   {% endfor %}
 
-{#   {% for entry in craft.entries.section('people').find() %}
-    {% set image = entry.personImage.last() %}
-    <li class="page user-content clearfix person" id="{{ entry.slug }}">
-      <div class="bio -left">
-        <header>
-          <h1>{{ entry.title }}</h1>
-          {% if entry.personPosition %}
-            <h2>{{ entry.personPosition }}</h2>
-          {% endif %}
-          <div class="links">{{ entry.personDetails }}</div>
-        </header>
-        {{ entry.body }}
-      </div>
-      {% if image|length %}
-        <div class="portrait -right" style="background-image: url('{{ image.getUrl('hero') }}');"></div>
-      {% endif %}
-   </li>
-  {% endfor %}
- #}
 </section>
 {% endblock %}
+
+{% block aside %}
+  <section id="filters" class="divider section-nav">
+    <h1>{{ entry.title }}</h1>
+    <ul class="option-set clearfix smoothscroll">
+      {% for block in entry.people %}
+        <li><a href="#{{ block.personName|kebab }}">{{ block.personName }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock aside %}
