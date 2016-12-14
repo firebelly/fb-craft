@@ -1,4 +1,3 @@
-// ‘cosm gulpin’
 var gulp         = require('gulp');
 var gulpif       = require('gulp-if');
 var sass         = require('gulp-sass');
@@ -12,6 +11,7 @@ var runSequence  = require('run-sequence');
 var argv         = require('minimist')(process.argv.slice(2));
 var isProduction = argv.production;
 var notify       = require("gulp-notify");
+var browserSync = require('browser-sync').create();
 
 // smash CSS!
 gulp.task('styles', function() {
@@ -25,6 +25,7 @@ gulp.task('styles', function() {
 		.pipe(gulp.dest('public/assets/dist/css'))
 		.pipe(gulpif(!isProduction, sourcemaps.write('maps')))
 		.pipe(gulpif(!isProduction, gulp.dest('public/assets/dist/css')))
+		.pipe(browserSync.stream({match: '**/*.css'}))
 		.pipe(notify({message: 'Styles smashed.', onLast: true}));
 });
 
@@ -39,6 +40,7 @@ gulp.task('scripts', function() {
 		.pipe(gulp.dest('public/assets/dist/js'))
 		.pipe(gulpif(!isProduction, sourcemaps.write('maps')))
 		.pipe(gulpif(!isProduction, gulp.dest('public/assets/dist/js')))
+		.pipe(browserSync.reload({stream:true}))
 		.pipe(notify({message: 'Scripts smashed.', onLast: true}));
 });
 
@@ -53,8 +55,15 @@ gulp.task('rev', function() {
 
 // folders to watch for changes
 gulp.task('watch', ['build'], function() {
-	gulp.watch('public/assets/scss/*.scss', ['styles']);
-	gulp.watch('public/assets/js/*.js', ['scripts']);
+	// Init BrowserSync
+	browserSync.init({
+		proxy: 'fb-craft.dev',
+		notify: false,
+		open: false
+	});
+
+	gulp.watch('public/assets/scss/**/*.scss', ['styles']);
+	gulp.watch('public/assets/js/**/*.js', ['scripts']);
 });
 
 // `gulp clean` - Deletes the build folder entirely.
@@ -63,7 +72,7 @@ gulp.task('clean', require('del').bind(null, ['public/assets/dist']));
 // `gulp build` - Run all the build tasks but don't clean up beforehand.
 gulp.task('build', function(callback) {
 	if (isProduction) {
-		// production gulpin' (with revisions)
+		// production gulpin' (with file revisioning)
 		runSequence(
 			'clean',
 			['styles','scripts'],
