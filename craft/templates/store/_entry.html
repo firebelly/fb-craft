@@ -49,7 +49,7 @@
                 </div>
               {% endif %}
               <div class="actions">
-                <button type="submit" class="submit button">Add To Cart</button>
+                <button type="submit" class="submit button add-to-cart" data-id="{{ entry.id }}" data-title="{{ entry.title }}" data-price="{{ entry.price }}" data-weight="{{ entry.weight }}">Add To Cart</button>
               </div>
             </div>
           </div>
@@ -70,4 +70,8 @@
   </article>
 
   {% include "partials/_pagination" with {'paginationSection': 'store', 'paginationOrder': 'postDate desc, id asc', 'postName': 'Product'} %}
+{% endblock %}
+
+{% block aside %}
+  {% include 'partials/_cart' %}
 {% endblock %}

@@ -19,7 +19,8 @@ $.gdgr.main = (function() {
       handheld = false,
       tablet = false,
       admin_status = false,
-      is_animating = false;
+      is_animating = false,
+      cart;
 
   function _init() {
     $('#flash').hide().css('visibility','visible').fadeIn();
@@ -30,6 +31,10 @@ $.gdgr.main = (function() {
         $(this).attr('title', '');
       }
     });
+
+    // Localstorage cart
+    cart = Modernizr.localstorage && localStorage.getItem('Fb.cart') ? JSON.parse(localStorage.getItem('Fb.cart')) : [];
+    $('.cart').toggleClass('cart-active', cart.length>0);
 
     // responsive videos
     $('.summary.user-content, .content').fitVids();
@@ -65,7 +70,7 @@ $.gdgr.main = (function() {
     }
 
     // Products
-    if ($('#shop-page').length) {
+    if ($('#store-page').length) {
       _initProducts();
     }
 
@@ -322,35 +327,126 @@ $.gdgr.main = (function() {
   }
 
   function _initProducts() {
-    // ajax cart actions
-    $('#wrapper').on('ajax:before ajax:success', '#product-form, #cart-form', function(){
-      $('#cart, #product-form .submit').toggleClass('loading');
-    })
-      .on('ajax:success', '#product-form, #cart-form, #cart a.delete', function(evt, data, status, xhr){
-        $.gdgr.main.showSidebar();
-        $('#cart').fadeOut(function() {
-          $('#cart').html(xhr.responseText).fadeIn();
-        });
-      })
-      .on('click', '#cart a.delete', function() {
-        $(this).parents('tr:first').fadeOut();
-      })
-      .on('ajax:failure', '#product-form, #cart-form, a.delete', function(evt, data, status, xhr){
-        alert('There was an error: '+xhr.responseText);
+    // Add to Cart buttons
+    $(document).on('click', '.add-to-cart', function() {
+      _addToCart({
+        title: $(this).attr('data-title'),
+        price: $(this).attr('data-price'),
+        weight: $(this).attr('data-weight'),
+        'quantity': 1,
+        id: $(this).attr('data-id')
       });
-
-    // paypal is freaking slow, give the user some instant feedback
-    $('#side').on('click', '#paypal-form .submit', function() {
-      $(this).text('Contacting PayPal...');
     });
 
-    // no submit button, trigger saves on return
-    $('#side').on('keydown', '#cart-form .quantity input', function(e) {
-      if (e.keyCode==13) $('#cart-form').submit();
-    }).on('focus', '#cart-form .quantity input', function() {
-      $('#cart .cart').addClass('editing');
-      $('#cart .edit-cart').text('Update');
+    // Delete cart items
+    $(document).on('click', '.cart .delete', function() {
+      _removeFromCart($(this).attr('data-id'));
     });
+
+    // Quantity fields
+    $(document).on('keydown', '.cart .quantity input', function(e) {
+      if (e.keyCode==13) {
+        e.preventDefault();
+        _updateCartQuantities();
+      }
+    }).on('change', '.cart .quantity input', function() {
+      _updateCartQuantities();
+    });
+
+    // Checkout button
+    $(document).on('click', '.cart button.checkout', function(e) {
+      _checkoutCart();
+    });
+    _showCart("Don't show the sidebar, man, we're just, like, init'ing the cart.");
+  }
+
+  // Add item to cart
+  function _addToCart(product) {
+    var exists = $.grep(cart, function(obj) {
+      return obj.title === product.title;
+    });
+    if (!exists.length) {
+      cart.push(product);
+    } else {
+      exists[0].quantity +=1;
+    }
+    _saveCart();
+    _showCart();
+  }
+  // Remove item from cart
+  function _removeFromCart(id) {
+    if (cart[id]) {
+      if (cart[id].quantity > 1) {
+        cart[id].quantity +=-1;
+      } else {
+        cart.splice(id,1);
+      }
+    }
+    _saveCart();
+    _showCart();
+  }
+  // Save cart if localStorage
+  function _saveCart() {
+    if (Modernizr.localstorage) {
+      localStorage.setItem('Fb.cart', JSON.stringify(cart));
+    }
+  }
+  // Update all cart quantities
+  function _updateCartQuantities() {
+    var quantity, id;
+    $('.cart-items li.line-item').each(function() {
+      quantity = parseInt($(this).find('.quantity input').val());
+      id = $(this).attr('data-id');
+      if (quantity > 0) {
+        cart[id].quantity = quantity;
+      } else {
+        cart.splice(id,1);
+      }
+    });
+    _saveCart();
+    _showCart();
+  }
+  // Build cart in DOM from cart object
+  function _showCart(no_open_sidebar) {
+    var cost = 0,
+        total = 0,
+        html = '';
+    $('.cart-items').empty();
+    // Loop through cart items and build rudimentary HTML cart
+    if (cart.length) {
+      $('.cart').addClass('cart-active').removeClass('loading').find('button.checkout').text('Checkout');
+      for (var i = 0; i < cart.length; i++) {
+        cost = cart[i].quantity * parseFloat(cart[i].price);
+        $('<li class="line-item" data-id="' + i + '"><div class="item">' + cart[i].title + '</div> <div class="price">$' + cost + '</div> ' +
+          '<div class="quantity"><span>Qty:</span> <input type="text" size="2" value="' + cart[i].quantity + '" tabindex="' + (i+1) + '"></div>' +
+          '<div class="delete-link"><a href="#" class="delete" data-id="' + i + '">Remove</a></div></li>')
+        .appendTo('.cart-items');
+        total += cost;
+      }
+      $('<li class="cart-total">Total: $' + total + '</li>').appendTo('.cart-items');
+      if (typeof no_open_sidebar === 'undefined') {
+        _showSidebar();
+      }
+    } else {
+      $('.cart').removeClass('cart-active');
+    }
+  }
+  // Build PayPal form and submit checkout
+  function _checkoutCart() {
+    var $form = $('form.cart-wrap');
+    for(var i = 0; i < cart.length; ++i) {
+      $("<input type='hidden' name='quantity_" + (i+1) + "' value='" + cart[i].quantity + "'>" +
+        "<input type='hidden' name='item_name_" + (i+1) + "' value='" + cart[i].title + "'>" +
+        "<input type='hidden' name='item_weight_" + (i+1) + "' value='" + cart[i].weight + "'>" +
+        "<input type='hidden' name='item_number_" + (i+1) + "' value='nb-" + cart[i].id + "'>" +
+        "<input type='hidden' name='amount_" + (i+1) + "' value='" + cart[i].price + "'>")
+      .appendTo($form);
+    }
+    // PayPal so stinkin' slow
+    $('.cart').addClass('loading').find('button.checkout').text('Contacting PayPal...');
+    setTimeout(function() {
+      $form.submit();
+    }, 150);
   }
 
   return {
