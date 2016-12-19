@@ -1,7 +1,11 @@
 <nav class="project-nav" aria-role="navigation">
   <ul class="projects clearfix">
     {% for entry in craft.entries.section('work') %}
-      {% set mainImage = entry.mainImage.last() %}
+      {% if entry.altImage|length %}
+        {% set mainImage = entry.altImage.first() %}
+      {% else %}
+        {% set mainImage = entry.mainImage.first() %}
+      {% endif %}
       {% if mainImage|length %}
         <li class="project">
           <article>

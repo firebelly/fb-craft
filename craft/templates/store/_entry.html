@@ -1,6 +1,9 @@
 {% extends (craft.request.isAjax and not craft.request.isLivePreview) ? "_ajax-layout" : "_layout" %}
+
 {% set title = entry.title %}
-{# {% if entry.seoDescription %}{% set description = entry.seoDescription %}{% endif %} #}
+{% if entry.seoTitle %}{% set seoTitle = entry.seoTitle %}{% endif %}
+{% if entry.seoDescription %}{% set seoDescription = entry.seoDescription %}{% endif %}
+
 {% set bodyClass = 'single' %}
 
 {% block content %}

@@ -1,16 +1,14 @@
-{# Set base SEO vars #}
-{% set seoTitle = globalSeo.seoTitle %}
-{% set seoDescription = globalSeo.seoDescription %}
-{# Revisioned CSS/js  #}
 {% includeCssFile craft.config.devMode ? "/assets/dist/css/application.css" : rev('css/application.css') %}
 {% includeJsFile craft.config.devMode ? "/assets/dist/js/application.js" : rev('js/application.js') %}
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
-  <meta charset="utf-8" />
-  <title>{% if title is defined %}{{ title }} - {{ siteName }}{% else %}{{ seoTitle }}{% endif %}</title>
-  <meta name="description" content="{% if description is defined %}{{ description }}{% else %}{{ seoDescription }}{% endif %}"/>
-  <link rel="home" href="{{ siteUrl }}" />
+  <meta charset="utf-8">
+  <title>{% if seoTitle is defined %}{{ seoTitle }}{% elseif title is defined %}{{ title }} | {{ siteName }}{% else %}{{ siteName }}{% endif %}</title>
+  {% if seoDescription is defined %}
+  <meta name="description" content="{{ seoDescription }}">
+  {% endif %}
+  <link rel="home" href="{{ siteUrl }}">
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
