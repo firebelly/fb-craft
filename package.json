@@ -10,7 +10,7 @@
   "devDependencies": {
     "browser-sync": "^2.18.5",
     "gulp-sass": "^2.3.2",
-    "gulp-scss": "^1.4.0"
+    "gulp-scss": "^1.4.0",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.0.1",
