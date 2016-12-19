@@ -29,7 +29,7 @@
     margin: ($padding * 3) auto;
     max-width: 800px;
     text-align: center;
-    p {
+    &, p {
       font-size: 24px;
       color: $black-fade;
       line-height: 1.375em;
