@@ -375,13 +375,7 @@ $.gdgr.main = (function() {
   }
   // Remove item from cart
   function _removeFromCart(id) {
-    if (cart[id]) {
-      if (cart[id].quantity > 1) {
-        cart[id].quantity +=-1;
-      } else {
-        cart.splice(id,1);
-      }
-    }
+    cart.splice(id,1);
     _saveCart();
     _showCart();
   }
