@@ -1,4 +1,3 @@
-  {# {% set params = craft.entries.section('thoughts').order('postDate desc, id asc') %} #}
   {% set params = craft.entries.section(paginationSection).order(paginationOrder) %}
   {% set prevEntry = entry.getPrev(params) %}
   {% if not prevEntry %}
@@ -11,10 +10,10 @@
   <nav class="footer-pagination">
     <ul>
       <li class="prev">
-        <a rel="prev" href="{{ prevEntry.url }}"><span class="arrow">&larr;</span> Previous Post</a>
+        <a rel="prev" href="{{ prevEntry.url }}"><span class="arrow">&larr;</span> Previous {{ postName }}</a>
       </li>
       <li class="next">
-        <a rel="next" href="{{ nextEntry.url }}">Next Post <span class="arrow">&rarr;</span></a>
+        <a rel="next" href="{{ nextEntry.url }}">Next {{ postName }} <span class="arrow">&rarr;</span></a>
       </li>
     </ul>
   </nav>

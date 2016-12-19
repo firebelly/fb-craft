@@ -3,16 +3,19 @@
 $customEnv = array(
 
     // Path info
-    'basePath' => '/Users/natebeaty/Sites/nb-craft/',
-    'baseUrl'  => 'http://nb-craft.dev/',
+    'basePath' => '/Users/natebeaty/Sites/fb-craft/',
+    'baseUrl'  => 'http://fb-craft.dev/',
 
     // Database connection info
     'user'     => 'root',
     'password' => '',
-    'database' => 'nb_craft',
+    'database' => 'fb_craft',
 
     // General config settings
     'general' => array(
+        'devMode' => true,
+        'cdnUrl' => '',
+        'imageDriver' => 'imagick',
     ),
 
 );

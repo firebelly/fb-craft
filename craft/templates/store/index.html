@@ -12,7 +12,8 @@
       {% for entry in craft.entries.section('store').limit(5) %}
         <li class="product">
           {% if entry.productImages|length %}
-            <div class="product-image lazy" style="background-image:url('/assets/images/gray.gif');" data-original="{{ entry.productImages.first().getUrl('projectThumb') }}"></div>
+            {% set productImage = entry.productImages.first() %}
+            <div class="product-image lazy" style="background-image:url('/assets/images/gray.gif');" data-original="{{ craft.config.cdnUrl }}{{ productImage.getUrl('projectThumb') }}" alt="{{ productImage.title }}></div>
           {% endif %}
           <header>
             <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>

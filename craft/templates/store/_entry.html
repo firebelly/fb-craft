@@ -61,7 +61,7 @@
         <div class="slider"><div class="wrap">
           <ul class="product-images">
             {% for image in entry.productImages %}
-              <li><img class="lazy" src="/assets/images/gray.gif" data-original="{{ image.getUrl('hero') }}"></li>
+              <li><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}></li>
             {% endfor %}
           </ul>
         </div></div>

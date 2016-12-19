@@ -23,7 +23,7 @@
         {{ block.bio }}
       </div>
       {% if image|length %}
-        <div class="portrait -right" style="background-image: url('{{ image.getUrl('hero') }}');"></div>
+        <div class="portrait -right" style="background-image: url('{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}');"></div>
       {% endif %}
    </li>
   {% endfor %}

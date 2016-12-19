@@ -66,7 +66,7 @@
                 </div>
               {% elseif block.type == "blockImages" %}
                 {% for image in block.images %}
-                  <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ image.getUrl('hero') }}"></p>
+                  <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}"></p>
                 {% endfor %}
               {% endif %}
           {% endfor %}
