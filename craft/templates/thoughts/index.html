@@ -1,12 +1,25 @@
 {% extends (craft.request.isAjax and not craft.request.isLivePreview) ? "_ajax-layout" : "_layout" %}
 {% set title = "Thoughts" %}
 
+{% if tag is defined %}
+  {% set tag = craft.tags.slug(tag).first() %}
+  {% set thoughtEntries = craft.entries.section('thoughts').relatedTo(tag) %}
+{% else %}
+  {% set thoughtEntries = craft.entries.section('thoughts') %}
+{% endif %}
+
 {% block content %}
   {% cache unless currentUser %}
 	<section class="thoughts-list page-content" data-page="/thoughts" data-page-title="{{ title }}">
-		{% for entry in craft.entries.section('thoughts').limit(5) %}
+		{% for entry in thoughtEntries %}
 			{% include "thoughts/_article" %}
 		{% endfor %}
 	</section>
 	{% endcache %}
 {% endblock %}
+
+{% block aside %}
+  {% cache unless currentUser %}
+  {% include "partials/_thoughts_nav" %}
+  {% endcache %}
+{% endblock aside %}
