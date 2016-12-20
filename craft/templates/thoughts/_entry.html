@@ -19,7 +19,7 @@
 
     <header class="section-title">
       <h1>{{ entry.title }}</h1>
-      <h3 class="date">{{ entry.postDate.format('M d, Y') }}{% if entry.author %}&ndash; by {{ entry.author }}{% endif %}</h3>
+      <h3 class="date">{{ entry.postDate.format('M d, Y') }}{% if entry.manualAuthor %} &ndash; by {{ entry.manualAuthor }}{% endif %}</h3>
 
       {# <%= render partial: '/shared/edit_bug', :locals => { :obj => news_post, :edit_path => refinery.edit_news_posts_admin_news_post_path(news_post) }%> #}
     </header>
