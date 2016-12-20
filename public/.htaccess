@@ -1,5 +1,7 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine On
+	RewriteRule ^$ /work [R=301,L]
+	RewriteRule ^(endeavors|people)/([^/]+)/? /$1#$2 [R=301,NE,L]
 
 	# Send would-be 404 requests to Craft
 	RewriteCond %{REQUEST_FILENAME} !-f
