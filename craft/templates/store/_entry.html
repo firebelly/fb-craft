@@ -69,7 +69,7 @@
     </section>
   </article>
 
-  {% include "partials/_pagination" with {'paginationSection': 'store', 'paginationOrder': 'postDate desc, id asc', 'postName': 'Product'} %}
+  {% include "partials/_pagination_structure" with {'paginationSection': 'store', 'postName': 'Product'} %}{% endblock %}
 {% endblock %}
 
 {% block aside %}

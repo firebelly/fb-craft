@@ -1,12 +1,11 @@
-  {# Pagination for Channel sections #}
-  {% set params = craft.entries.section(paginationSection).order('postDate desc, id asc') %}
-  {% set prevEntry = entry.getPrev(params) %}
+  {# Pagination for Structure sections #}
+  {% set prevEntry = craft.entries.section(paginationSection).positionedBefore(entry).order('lft desc').first() %}
   {% if not prevEntry %}
-    {% set prevEntry = params.last() %}
+    {% set prevEntry = craft.entries.section(paginationSection).last() %}
   {% endif %}
-  {% set nextEntry = entry.getNext(params) %}
+  {% set nextEntry = craft.entries.section(paginationSection).positionedAfter(entry).order('lft asc').first() %}
   {% if not nextEntry %}
-    {% set nextEntry = params.first() %}
+    {% set nextEntry = craft.entries.section(paginationSection).first() %}
   {% endif %}
   <nav class="footer-pagination">
     <ul>

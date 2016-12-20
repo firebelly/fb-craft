@@ -9,70 +9,69 @@
 {% set video = entry.video.last() %}
 
 {% block content %}
-  {# <%= cache entry do -%> #}
-    <article class="content-block single-project" data-id="{{ entry.id }}">
-      <section class="content interior">
-        {% if mainImage|length %}
-          {% if video|length %}
-            <div class="project-banner video">
-              <video autoplay loop poster="{{ mainImage.getUrl('hero') }}">
-                <source src="{{ video.getUrl() }}" type="video/mp4">
-              </video>
-            </div>
-          {% else %}
-            <div class="project-banner" style="background-image:url({{ mainImage.getUrl('hero') }});"></div>
-          {% endif %}
+  <article class="content-block single-project" data-id="{{ entry.id }}">
+    <section class="content interior">
+      {% if mainImage|length %}
+        {% if video|length %}
+          <div class="project-banner video">
+            <video autoplay loop poster="{{ mainImage.getUrl('hero') }}">
+              <source src="{{ video.getUrl() }}" type="video/mp4">
+            </video>
+          </div>
+        {% else %}
+          <div class="project-banner" style="background-image:url({{ mainImage.getUrl('hero') }});"></div>
         {% endif %}
-        <div class="intro clearfix">
-          <header class="section-title">
-            <h1 class="project-client">{{ entry.title }}</h1>
-            <h4 class="project-name">{{ entry.subtitle }}</h4>
-            {# <%= render :partial => '/shared/edit_bug', :locals => { :obj => entry, :edit_path => refinery.edit_projects_admin_project_path(entry) }%> #}
-          </header>
-          <div class="summary user-content">{{ entry.body }}</div>
-          <div class="project-meta grid">
-            <div class="industry one-half">
-              <div class="-inner">
-                <h3>Industry:</h3>
-                {% if entry.industry | length %}
-                  <ul><li><a href="/work#{{ entry.industry.last().slug }}">{{ entry.industry.last().title }}</a></li></ul>
-                {% endif %}
-              </div>
+      {% endif %}
+      <div class="intro clearfix">
+        <header class="section-title">
+          <h1 class="project-client">{{ entry.title }}</h1>
+          <h4 class="project-name">{{ entry.subtitle }}</h4>
+          {# <%= render :partial => '/shared/edit_bug', :locals => { :obj => entry, :edit_path => refinery.edit_projects_admin_project_path(entry) }%> #}
+        </header>
+        <div class="summary user-content">{{ entry.body }}</div>
+        <div class="project-meta grid">
+          <div class="industry one-half">
+            <div class="-inner">
+              <h3>Industry:</h3>
+              {% if entry.industry | length %}
+                <ul><li><a href="/work#{{ entry.industry.last().slug }}">{{ entry.industry.last().title }}</a></li></ul>
+              {% endif %}
             </div>
-            <div class="services one-half">
-              <div class="inner">
-                <h3>Services:</h3>
-                {% if entry.services | length %}
-                  <ul><li>{% for service in entry.services %}
-                  <a href="/work#{{ service.slug }}">{{ service.title }}</a>
-                  {{ not loop.last ? "," }}
-                  {% endfor %}</li></ul>
-                {% endif %}
-              </div>
+          </div>
+          <div class="services one-half">
+            <div class="inner">
+              <h3>Services:</h3>
+              {% if entry.services | length %}
+                <ul><li>{% for service in entry.services %}
+                <a href="/work#{{ service.slug }}">{{ service.title }}</a>
+                {{ not loop.last ? "," }}
+                {% endfor %}</li></ul>
+              {% endif %}
             </div>
           </div>
         </div>
-        <div class="project-images clearfix">
-          {% for block in entry.projectBlocks %}
-              {% if block.type == "blockHeader" %}
-                <div class="project-summary user-content">
-                  {% if block.numberHeader %}
-                    <h3 class="h1 number-header">{{ block.numberHeader }}</h3>
-                  {% endif %}
-                  {% if block.blockTitle %}
-                    <h2>{{ block.blockTitle }}</h2>
-                  {% endif %}
-                  {{ block.blockDescription }}
-                </div>
-              {% elseif block.type == "blockImages" %}
-                {% for image in block.images %}
-                  <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}"></p>
-                {% endfor %}
-              {% endif %}
-          {% endfor %}
-        </div>
-      </section>
-    </article>
+      </div>
+      <div class="project-images clearfix">
+        {% for block in entry.projectBlocks %}
+            {% if block.type == "blockHeader" %}
+              <div class="project-summary user-content">
+                {% if block.numberHeader %}
+                  <h3 class="h1 number-header">{{ block.numberHeader }}</h3>
+                {% endif %}
+                {% if block.blockTitle %}
+                  <h2>{{ block.blockTitle }}</h2>
+                {% endif %}
+                {{ block.blockDescription }}
+              </div>
+            {% elseif block.type == "blockImages" %}
+              {% for image in block.images %}
+                <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}"></p>
+              {% endfor %}
+            {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  </article>
 
-    {% include "partials/_pagination" with {'paginationSection': 'work', 'paginationOrder': 'postDate desc, id asc', 'postName': 'Project'} %}
+  {% include "partials/_pagination_structure" with {'paginationSection': 'work', 'postName': 'Project'} %}
 {% endblock %}
