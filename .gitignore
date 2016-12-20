@@ -8,6 +8,7 @@ public/uploads/*
 .gulp-scss-cache/*
 node_modules/*
 logs/*
+.env
 _env.php
 *.pyc
 

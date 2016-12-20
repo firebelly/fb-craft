@@ -1,8 +1,9 @@
 from fabric.api import *
 import os
-# from dotenv import Dotenv
-# dotenv = Dotenv(os.path.join(os.path.dirname(__file__), ".env"))
-# os.environ.update(dotenv)
+from os.path import join,dirname
+from dotenv import load_dotenv
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 env.hosts = ['craft.firebelly.co']
 env.user = 'firebelly'
@@ -28,20 +29,20 @@ def update():
 	with cd(env.remotepath):
 		run('git pull origin %s' % env.git_branch)
 
-def clear_cache():
-	with cd(env.remotepath):
-		run('rm -rf cache/data/*')
+# def clear_cache():
+# 	with cd(env.remotepath):
+# 		run('rm -rf cache/data/*')
 
 def pushdb():
 	local("mysqldump -u "+os.environ.get('DB_USER')+" -p'"+os.environ.get('DB_PASS') +
 		"' "+os.environ.get('DB_NAME')+" | gzip -9 > ~/temp_db.sql.gz")
-	# secure copy to local environment
+	# scp dump to remote
 	local("scp ~/temp_db.sql.gz "+env.user+"@"+env.hosts[0]+":")
-	# copy remote backups to local database
+	# shove dump into production db
 	run("zcat ~/temp_db.sql.gz | mysql --user='"+os.environ.get('REMOTE_DB_USER') +
 		"' --password='"+os.environ.get('REMOTE_DB_PASS') +
 		"' --database "+os.environ.get('REMOTE_DB_NAME'))
-	# cleanup files from local & remote environments
+	# cleanup files from local & remote
 	run("rm ~/temp_db.sql.gz")
 	local("rm ~/temp_db.sql.gz")
 
