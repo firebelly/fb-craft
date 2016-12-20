@@ -5,6 +5,7 @@
 {% if entry.seoDescription %}{% set seoDescription = entry.seoDescription %}{% endif %}
 
 {% block content %}
+  {% cache unless currentUser %}
   {% set headerImage = entry.headerImage.last() %}
   <article class="news-article listing clearfix">
     {% if headerImage|length %}
@@ -26,6 +27,6 @@
       {{ entry.body }}
     </section>
   </article>
-
   {% include "partials/_pagination" with {'paginationSection': 'thoughts', 'postName': 'Post'} %}
+  {% endcache %}
 {% endblock %}

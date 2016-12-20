@@ -9,6 +9,7 @@
 {% set video = entry.video.last() %}
 
 {% block content %}
+  {% cache unless currentUser %}
   <article class="content-block single-project" data-id="{{ entry.id }}">
     <section class="content interior">
       {% if mainImage|length %}
@@ -78,6 +79,6 @@
       </div>
     </section>
   </article>
-
   {% include "partials/_pagination_structure" with {'paginationSection': 'work', 'postName': 'Project'} %}
+  {% endcache %}
 {% endblock %}

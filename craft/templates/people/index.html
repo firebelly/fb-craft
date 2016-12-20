@@ -7,31 +7,32 @@
 {% set bodyClass = 'single page people' %}
 
 {% block content %}
-<section class="content interior grid">
-
-  {% for block in entry.people %}
-    {% set image = block.photo.last() %}
-    <li class="page user-content clearfix person" id="{{ block.personName|kebab }}">
-      <div class="bio -left">
-        <header>
-          <h1>{{ block.personName }}</h1>
-          {% if block.personTitle %}
-            <h2>{{ block.personTitle }}</h2>
-          {% endif %}
-          <div class="links">{{ block.socialLinks }}</div>
-        </header>
-        {{ block.bio }}
-      </div>
-      {% if image|length %}
-        <div class="portrait -right" style="background-image: url('{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}');"></div>
-      {% endif %}
-   </li>
-  {% endfor %}
-
-</section>
+  {% cache unless currentUser %}
+  <section class="content interior grid">
+    {% for block in entry.people %}
+      {% set image = block.photo.last() %}
+      <li class="page user-content clearfix person" id="{{ block.personName|kebab }}">
+        <div class="bio -left">
+          <header>
+            <h1>{{ block.personName }}</h1>
+            {% if block.personTitle %}
+              <h2>{{ block.personTitle }}</h2>
+            {% endif %}
+            <div class="links">{{ block.socialLinks }}</div>
+          </header>
+          {{ block.bio }}
+        </div>
+        {% if image|length %}
+          <div class="portrait -right" style="background-image: url('{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}');"></div>
+        {% endif %}
+     </li>
+    {% endfor %}
+  </section>
+  {% endcache %}
 {% endblock %}
 
 {% block aside %}
+  {% cache unless currentUser %}
   <section id="filters" class="divider section-nav">
     <h1>{{ entry.title }}</h1>
     <ul class="option-set clearfix smoothscroll">
@@ -40,4 +41,5 @@
       {% endfor %}
     </ul>
   </section>
+  {% endcache %}
 {% endblock aside %}

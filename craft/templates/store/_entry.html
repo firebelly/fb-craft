@@ -7,6 +7,7 @@
 {% set bodyClass = 'single' %}
 
 {% block content %}
+  {% cache unless currentUser %}
   <article class="product single clearfix">
     <div class="interior">
       <div class="intro one-half -left clearfix">
@@ -20,7 +21,6 @@
               <div class="description">{{ entry.body }}</div>
             {% endif %}
           </div>
-
           {# {{ render :partial => '/shared/edit_bug', :locals => { :obj => product, :edit_path => refinery.edit_products_admin_product_path(product) }}} #}
         </div>
       </div>
@@ -70,6 +70,7 @@
   </article>
 
   {% include "partials/_pagination_structure" with {'paginationSection': 'store', 'postName': 'Product'} %}
+  {% endcache %}
 {% endblock %}
 
 {% block aside %}
