@@ -1,5 +1,10 @@
 // Thoughts page
-
+#thoughts-page {
+  .filter-header-wrap {
+    margin: 0 auto;
+    max-width: 600px;
+  }
+}
 .news-posts {
   .news-article {
     &:first-of-type {
@@ -49,6 +54,7 @@
       margin-bottom: 0;
       @include min-screen($breakpoint-small) {
         font-size: 48px;
+        max-width: 600px;
       }
       a {
         position: relative;

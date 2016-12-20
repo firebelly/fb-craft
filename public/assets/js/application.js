@@ -437,7 +437,7 @@ $.gdgr.main = (function() {
       .appendTo($form);
     }
     // PayPal so stinkin' slow
-    $('.cart').addClass('loading').find('button.checkout').text('Contacting PayPal...');
+    $('.cart').addClass('loading').find('button.checkout').text('Contacting PayPal...').prop('disabled', true);
     setTimeout(function() {
       $form.submit();
     }, 150);

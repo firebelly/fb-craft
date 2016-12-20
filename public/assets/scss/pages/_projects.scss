@@ -1,18 +1,17 @@
 // Projects
 
-#work-page.index {
-  .filter-header {
-    @extend %small-caps;
-    @extend %fade-links;
-    padding: $padding * 2;
-    display: none;
-    button {
-      display: inline-block;
-      margin-left: 4px;
-    }
-    &.active {
-      display: block;
-    }
+.filter-header {
+  @extend %small-caps;
+  @extend %fade-links;
+  display: none;
+  padding: $padding * 2;
+  display: none;
+  a,button {
+    display: inline-block;
+    margin-left: 4px;
+  }
+  &.active {
+    display: block;
   }
 }
 
@@ -75,6 +74,7 @@
     @include min-screen($breakpoint-small) {
       h1 {
         font-size: 48px;
+        max-width: 600px;
       }
     }
   }
