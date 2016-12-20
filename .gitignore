@@ -9,6 +9,7 @@ public/uploads/*
 node_modules/*
 logs/*
 _env.php
+*.pyc
 
 public/assets/dist/css/application.css
 public/assets/dist/js/application.js
