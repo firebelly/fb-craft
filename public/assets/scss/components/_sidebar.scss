@@ -163,6 +163,17 @@ body#store-page .nav-store {
   color: $white;
   padding: 0 25px;
   margin-top: ($padding * 4);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity .5s ease-out, max-height .25s;
+  &.cart-active {
+    opacity: 1;
+    max-height: 500px;
+  }
+  &.loading {
+    opacity: .5;
+  }
   h3 {
     color: $white;
     font-size: 24px;
@@ -219,13 +230,18 @@ body#store-page .nav-store {
         display: inline-block;
       }
       input {
+        &::selection {
+          background: $pink;
+        }
         &:focus, &:active {
           border-bottom: 1px solid $white;
         }
       }
     }
   }
-
+  .actions {
+    margin-top: 0;
+  }
   .submit {
     margin-top: ($padding * 1.5);
   }
