@@ -16,3 +16,5 @@ public/assets/dist/css/application.css
 public/assets/dist/js/application.js
 public/assets/dist/js/maps/application.js.map
 public/assets/dist/css/maps/application.css.map
+
+public/.well-known
