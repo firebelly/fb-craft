@@ -1,8 +1,8 @@
 {
-  "name": "natebeaty",
+  "name": "firebelly",
   "version": "1.0.0",
-  "author": "nate beaty / clixel",
-  "homepage": "http://natebeaty.com/",
+  "author": "firebelly design",
+  "homepage": "https://www.firebellydesign.com/",
   "license": "ISC",
   "main": "gulpfile.js",
   "dependencies": {
@@ -31,6 +31,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/natebeaty/natebeaty.git"
+    "url": "git@github.com:firebelly/fb-craft.git"
   }
 }
