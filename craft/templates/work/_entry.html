@@ -15,12 +15,12 @@
       {% if mainImage|length %}
         {% if video|length %}
           <div class="project-banner video">
-            <video autoplay loop poster="{{ mainImage.getUrl('hero') }}">
-              <source src="{{ video.getUrl() }}" type="video/mp4">
+            <video autoplay loop poster="{{ craft.config.cdnUrl }}{{ mainImage.getUrl('hero') }}">
+              <source src="{{ craft.config.cdnUrl }}{{ video.getUrl() }}" type="video/mp4">
             </video>
           </div>
         {% else %}
-          <div class="project-banner" style="background-image:url({{ mainImage.getUrl('hero') }});"></div>
+          <div class="project-banner" style="background-image:url({{ craft.config.cdnUrl }}{{ mainImage.getUrl('hero') }});"></div>
         {% endif %}
       {% endif %}
       <div class="intro clearfix">
