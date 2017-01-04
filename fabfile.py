@@ -39,9 +39,22 @@ def pushdb():
 	# scp dump to remote
 	local("scp ~/temp_db.sql.gz "+env.user+"@"+env.hosts[0]+":")
 	# shove dump into production db
-	run("zcat ~/temp_db.sql.gz | mysql --user='"+os.environ.get('REMOTE_DB_USER') +
+	run("gunzip -c ~/temp_db.sql.gz | mysql --user='"+os.environ.get('REMOTE_DB_USER') +
 		"' --password='"+os.environ.get('REMOTE_DB_PASS') +
 		"' --database "+os.environ.get('REMOTE_DB_NAME'))
+	# cleanup files from local & remote
+	run("rm ~/temp_db.sql.gz")
+	local("rm ~/temp_db.sql.gz")
+
+def pulldb():
+	run("mysqldump -u "+os.environ.get('REMOTE_DB_USER')+" -p'"+os.environ.get('REMOTE_DB_PASS') +
+		"' "+os.environ.get('REMOTE_DB_NAME')+" | gzip -9 > ~/temp_db.sql.gz")
+	# scp dump from remote
+	local("scp "+env.user+"@"+env.hosts[0]+":~/temp_db.sql.gz ~/")
+	# shove dump into local db
+	local("gunzip -c ~/temp_db.sql.gz | mysql --user='"+os.environ.get('DB_USER') +
+		"' --password='"+os.environ.get('DB_PASS') +
+		"' --database "+os.environ.get('DB_NAME'))
 	# cleanup files from local & remote
 	run("rm ~/temp_db.sql.gz")
 	local("rm ~/temp_db.sql.gz")

@@ -1,4 +1,20 @@
 <?php
+// Load Composer libraries
+require_once('../vendor/autoload.php');
+
+// Get dotenv variables for config
+try {
+	$dotenv = new Dotenv\Dotenv(dirname(__DIR__));
+	$dotenv->load();
+	$dotenv->required(['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS', 'BASE_PATH', 'BASE_URL']);
+} catch (Exception $e) {
+	exit('Could not find a .env file.');
+}
+
+// Stripe init
+// if (strpos($_SERVER['REQUEST_URI'],'/store') !== FALSE) {
+// 	\Stripe\Stripe::setApiKey(getenv('STRIPE_SECRET_KEY'));
+// }
 
 // Path to your craft/ folder
 $craftPath = '../craft';

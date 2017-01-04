@@ -7,24 +7,23 @@
  * You can see a list of the default settings in craft/app/etc/config/defaults/general.php
  */
 
-// Get environment
-require('_env.php');
-
 return array(
-
-    // Universal settings
     '*' => array(
         'omitScriptNameInUrls' => true,
-        'enableCsrfProtection' => true,
-        'siteUrl' => $customEnv['baseUrl'],
         'imageDriver' => 'imagick',
+        'cdnUrl' => getenv('CDN_URL'),
+        'stripePublishableKey' => getenv('STRIPE_PUBLISHABLE_KEY'),
         'environmentVariables' => array(
-            'baseUrl'  => $customEnv['baseUrl'],
-            'basePath' => $customEnv['basePath'],
+            'baseUrl'  => getenv('BASE_URL'),
+            'basePath' => getenv('BASE_PATH'),
         )
     ),
 
-    // Custom environment settings
-    parse_url($customEnv['baseUrl'], PHP_URL_HOST) => $customEnv['general']
+    'fb-craft.dev' => array(
+        'devMode' => true,
+    ),
 
+    'firebellydesign.com' => array(
+        'cooldownDuration' => 0,
+    )
 );

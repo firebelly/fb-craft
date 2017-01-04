@@ -18,9 +18,10 @@ $.gdgr.main = (function() {
       desktop = false,
       handheld = false,
       tablet = false,
-      admin_status = false,
-      is_animating = false,
-      cart;
+      adminStatus = false,
+      isAnimating = false,
+      cart,
+      stripeCheckout;
 
   function _init() {
     $('#flash').hide().css('visibility','visible').fadeIn();
@@ -33,7 +34,7 @@ $.gdgr.main = (function() {
     });
 
     // Localstorage cart
-    cart = Modernizr.localstorage && localStorage.getItem('Fb.cart') ? JSON.parse(localStorage.getItem('Fb.cart')) : [];
+    cart = Modernizr.localstorage && localStorage.getItem('Fb.cart') ? JSON.parse(localStorage.getItem('Fb.cart')) : {items:[],shipping:{}};
     $('.cart').toggleClass('cart-active', cart.length>0);
 
     // responsive videos
@@ -118,13 +119,13 @@ $.gdgr.main = (function() {
     // var headerHeight = $('.site-header').outerHeight();
     _hideHeader();
     var headerHeight = 0;
-    is_animating = true;
+    isAnimating = true;
     element.velocity("scroll", {
       duration: duration,
       delay: delay,
       offset: -headerHeight,
       complete: function(elements) {
-        is_animating = false;
+        isAnimating = false;
       }
     }, "easeOutSine");
   }
@@ -229,7 +230,7 @@ $.gdgr.main = (function() {
     });
 
     setInterval(function() {
-        if (!is_animating && didScroll) {
+        if (!isAnimating && didScroll) {
             _hasScrolled();
             didScroll = false;
         }
@@ -332,10 +333,22 @@ $.gdgr.main = (function() {
       _addToCart({
         title: $(this).attr('data-title'),
         price: $(this).attr('data-price'),
+        stripe_product_id: $(this).attr('data-stripe-product-id'),
         weight: $(this).attr('data-weight'),
         'quantity': 1,
         id: $(this).attr('data-id')
       });
+    });
+
+    stripeCheckout = StripeCheckout.configure({
+      key: $('form.cart-wrap').attr('data-stripe-publishable-key'),
+      image: '/assets/images/checkout-logo.png',
+      locale: 'auto',
+      token: function(token) {
+        console.log(token);
+        // You can access the token ID with `token.id`.
+        // Get the token ID to your server-side code for use.
+      }
     });
 
     // Delete cart items
@@ -355,18 +368,18 @@ $.gdgr.main = (function() {
 
     // Checkout button
     $(document).on('click', '.cart button.checkout', function(e) {
-      _checkoutCart();
+      _checkoutCart(e);
     });
     _showCart("Don't show the sidebar, man, we're just, like, init'ing the cart.");
   }
 
   // Add item to cart
   function _addToCart(product) {
-    var exists = $.grep(cart, function(obj) {
+    var exists = $.grep(cart.items, function(obj) {
       return obj.title === product.title;
     });
     if (!exists.length) {
-      cart.push(product);
+      cart.items.push(product);
     } else {
       exists[0].quantity +=1;
     }
@@ -375,7 +388,7 @@ $.gdgr.main = (function() {
   }
   // Remove item from cart
   function _removeFromCart(id) {
-    cart.splice(id,1);
+    cart.items.splice(id,1);
     _saveCart();
     _showCart();
   }
@@ -392,9 +405,9 @@ $.gdgr.main = (function() {
       quantity = parseInt($(this).find('.quantity input').val());
       id = $(this).attr('data-id');
       if (quantity > 0) {
-        cart[id].quantity = quantity;
+        cart.items[id].quantity = quantity;
       } else {
-        cart.splice(id,1);
+        cart.items.splice(id,1);
       }
     });
     _saveCart();
@@ -405,18 +418,21 @@ $.gdgr.main = (function() {
     var cost = 0,
         total = 0,
         html = '';
+    cart.shipping.cost = 6;
     $('.cart-items').empty();
     // Loop through cart items and build rudimentary HTML cart
-    if (cart.length) {
+    if (cart.items.length) {
       $('.cart').addClass('cart-active').removeClass('loading').find('button.checkout').text('Checkout');
-      for (var i = 0; i < cart.length; i++) {
-        cost = cart[i].quantity * parseFloat(cart[i].price);
-        $('<li class="line-item" data-id="' + i + '"><div class="item">' + cart[i].title + '</div> <div class="price">$' + cost + '</div> ' +
-          '<div class="quantity"><span>Qty:</span> <input type="text" size="2" value="' + cart[i].quantity + '" tabindex="' + (i+1) + '"></div>' +
+      for (var i = 0; i < cart.items.length; i++) {
+        cost = cart.items[i].quantity * parseFloat(cart.items[i].price);
+        $('<li class="line-item" data-stripe-product-id="' + cart.items[i].stripe_product_id + '" data-id="' + i + '"><div class="item">' + cart.items[i].title + '</div> <div class="price">$' + cost + '</div> ' +
+          '<div class="quantity"><span>Qty:</span> <input type="text" size="2" value="' + cart.items[i].quantity + '" tabindex="' + (i+1) + '"></div>' +
           '<div class="delete-link"><a href="#" class="delete" data-id="' + i + '">Remove</a></div></li>')
         .appendTo('.cart-items');
         total += cost;
       }
+      total += cart.shipping.cost;
+      $('<li class="cart-shipping active" data-cost="6">Shipping: $6 USA <span style="opacity:.5">$30 INT\'L</span></li>').appendTo('.cart-items');
       $('<li class="cart-total">Total: $' + total + '</li>').appendTo('.cart-items');
       if (typeof no_open_sidebar === 'undefined') {
         _showSidebar();
@@ -426,21 +442,30 @@ $.gdgr.main = (function() {
     }
   }
   // Build PayPal form and submit checkout
-  function _checkoutCart() {
-    var $form = $('form.cart-wrap');
-    for(var i = 0; i < cart.length; ++i) {
-      $("<input type='hidden' name='quantity_" + (i+1) + "' value='" + cart[i].quantity + "'>" +
-        "<input type='hidden' name='item_name_" + (i+1) + "' value='" + cart[i].title + "'>" +
-        "<input type='hidden' name='item_weight_" + (i+1) + "' value='" + cart[i].weight + "'>" +
-        "<input type='hidden' name='item_number_" + (i+1) + "' value='nb-" + cart[i].id + "'>" +
-        "<input type='hidden' name='amount_" + (i+1) + "' value='" + cart[i].price + "'>")
-      .appendTo($form);
-    }
-    // PayPal so stinkin' slow
-    $('.cart').addClass('loading').find('button.checkout').text('Contacting PayPal...').prop('disabled', true);
-    setTimeout(function() {
-      $form.submit();
-    }, 150);
+  function _checkoutCart(e) {
+    // Open Checkout with further options:
+    stripeCheckout.open({
+      name: 'Firebelly Checkout',
+      // description: 'Shop',
+      amount: 2000,
+      shippingAddress: true
+    });
+    e.preventDefault();
+
+    // var $form = $('form.cart-wrap');
+    // for(var i = 0; i < cart.length; ++i) {
+    //   $("<input type='hidden' name='quantity_" + (i+1) + "' value='" + cart.items[i].quantity + "'>" +
+    //     "<input type='hidden' name='item_name_" + (i+1) + "' value='" + cart.items[i].title + "'>" +
+    //     "<input type='hidden' name='item_weight_" + (i+1) + "' value='" + cart.items[i].weight + "'>" +
+    //     "<input type='hidden' name='item_number_" + (i+1) + "' value='nb-" + cart.items[i].id + "'>" +
+    //     "<input type='hidden' name='amount_" + (i+1) + "' value='" + cart.items[i].price + "'>")
+    //   .appendTo($form);
+    // }
+    // // PayPal so stinkin' slow
+    // $('.cart').addClass('loading').find('button.checkout').text('Contacting PayPal...').prop('disabled', true);
+    // setTimeout(function() {
+    //   $form.submit();
+    // }, 150);
   }
 
   return {

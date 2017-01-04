@@ -182,6 +182,9 @@ body#store-page .nav-store {
   ul {
     @extend %small-caps;
   }
+  .cart-shipping {
+    margin-bottom: ($padding * 1.5);
+  }
   .line-item {
     position: relative;
     padding-right: 20px;
