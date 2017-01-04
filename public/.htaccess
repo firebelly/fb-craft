@@ -11,16 +11,20 @@
   RewriteCond %{HTTP_HOST} !^fb-craft\.dev [NC]
   RewriteCond %{HTTP_HOST} !^craft\.firebelly\.co [NC]
   RewriteCond %{HTTP_HOST} !^firebelly\.webfactional\.com [NC]
+  RewriteCond %{HTTP_HOST} !^firebelly\.cachefly\.net [NC]
   RewriteRule ^(.*)$ https://www.firebellydesign.com/$1 [R=301,L]
 
   # Force SSL
 	RewriteCond %{HTTP:X-Forwarded-SSL} !on
 	RewriteCond %{HTTP_HOST} !^fb-craft\.dev [NC]
+	RewriteCond %{HTTP_HOST} !^firebelly\.cachefly\.net [NC]
 	RewriteCond %{HTTP_HOST} !^craft\.firebelly\.co [NC]
 	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
   # redirect root to /work
 	RewriteRule ^$ /work [R=301,L]
+  # custom redirects
+	RewriteRule ^flor/? /work/flor-rebrand [R=301,L]
   # redirect people & endeavors single URLs to hashes
 	RewriteRule ^(endeavors|people)/([^/]+)/? /$1#$2 [R=301,NE,L]
 </IfModule>
