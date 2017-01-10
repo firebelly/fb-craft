@@ -34,7 +34,7 @@ $.gdgr.main = (function() {
     });
 
     // Localstorage cart
-    cart = Modernizr.localstorage && localStorage.getItem('Fb.cart') ? JSON.parse(localStorage.getItem('Fb.cart')) : {items:[],shipping:{}};
+    cart = Modernizr.localstorage && localStorage.getItem('Fb.cartWithShipping') ? JSON.parse(localStorage.getItem('Fb.cartWithShipping')) : {items:[],shipping:{type:'US',cost:6,quantity:1}};
     $('.cart').toggleClass('cart-active', cart.length>0);
 
     // responsive videos
@@ -340,14 +340,30 @@ $.gdgr.main = (function() {
       });
     });
 
+    $(document).on('click', '.shipping-option', function() {
+      $('.cart .shipping-option').removeClass('active');
+      $(this).addClass('active');
+      _updateCartShipping();
+      _showCart();
+    });
+
     stripeCheckout = StripeCheckout.configure({
       key: $('form.cart-wrap').attr('data-stripe-publishable-key'),
       image: '/assets/images/checkout-logo.png',
       locale: 'auto',
-      token: function(token) {
-        console.log(token);
-        // You can access the token ID with `token.id`.
-        // Get the token ID to your server-side code for use.
+      token: function(token, args) {
+        data = $('form.cart-wrap').serialize() + '&token=' + JSON.stringify(token) + '&customer=' + JSON.stringify(args) + '&cart=' + JSON.stringify(cart);
+        $.post('/', data, function(response) {
+          if (response.success) {
+            _resetCart();
+            _hideSidebar();
+            alert('Order placed ok! You should receive an email soon.');
+          } else {
+            alert('There was a transaction error: ' + response.error);
+          }
+        }).fail(function() {
+          alert('error!');
+        });
       }
     });
 
@@ -373,6 +389,12 @@ $.gdgr.main = (function() {
     _showCart("Don't show the sidebar, man, we're just, like, init'ing the cart.");
   }
 
+  function _resetCart() {
+    cart = {items:[],shipping:{type:'US',cost:6,quantity:1}};
+    _saveCart();
+    _showCart("Nope");
+  }
+
   // Add item to cart
   function _addToCart(product) {
     var exists = $.grep(cart.items, function(obj) {
@@ -383,7 +405,7 @@ $.gdgr.main = (function() {
     } else {
       exists[0].quantity +=1;
     }
-    _saveCart();
+    _updateCartShipping();
     _showCart();
   }
   // Remove item from cart
@@ -395,7 +417,7 @@ $.gdgr.main = (function() {
   // Save cart if localStorage
   function _saveCart() {
     if (Modernizr.localstorage) {
-      localStorage.setItem('Fb.cart', JSON.stringify(cart));
+      localStorage.setItem('Fb.cartWithShipping', JSON.stringify(cart));
     }
   }
   // Update all cart quantities
@@ -410,15 +432,16 @@ $.gdgr.main = (function() {
         cart.items.splice(id,1);
       }
     });
-    _saveCart();
     _showCart();
+    _updateCartShipping();
   }
   // Build cart in DOM from cart object
   function _showCart(no_open_sidebar) {
+    console.log(cart);
     var cost = 0,
         total = 0,
+        total_items = 0,
         html = '';
-    cart.shipping.cost = 6;
     $('.cart-items').empty();
     // Loop through cart items and build rudimentary HTML cart
     if (cart.items.length) {
@@ -430,9 +453,11 @@ $.gdgr.main = (function() {
           '<div class="delete-link"><a href="#" class="delete" data-id="' + i + '">Remove</a></div></li>')
         .appendTo('.cart-items');
         total += cost;
+        total_items += cart.items[i].quantity;
       }
       total += cart.shipping.cost;
-      $('<li class="cart-shipping active" data-cost="6">Shipping: $6 USA <span style="opacity:.5">$30 INT\'L</span></li>').appendTo('.cart-items');
+      cart.total = total;
+      $('<li class="cart-shipping active">Shipping: <span class="shipping-option'+(cart.shipping.type=='US' ? ' active' : '')+'" data-type="US" data-label="US" data-cost="6">$'+(Math.ceil(total_items / 2) * 6)+' USA</span> <span class="shipping-option'+(cart.shipping.type=='INTL' ? ' active' : '')+'" data-label="INT\'L" data-type="INTL" data-cost="30">$30 INT\'L</span></li>').appendTo('.cart-items');
       $('<li class="cart-total">Total: $' + total + '</li>').appendTo('.cart-items');
       if (typeof no_open_sidebar === 'undefined') {
         _showSidebar();
@@ -441,17 +466,35 @@ $.gdgr.main = (function() {
       $('.cart').removeClass('cart-active');
     }
   }
+  function _updateCartShipping() {
+    var $activeShipping = $('.shipping-option.active');
+    if ($activeShipping.length > 0) {
+      cart.shipping.type = $activeShipping.attr('data-type');
+      cart.shipping.cost = parseFloat($activeShipping.attr('data-cost'));
+      cart.shipping.quantity = 1;
+      // Calculate shipping qty (hacky way of charging $6 per 2 books)
+      var total_items = cart.items.reduce(function(a,b){return a + b.quantity;}, 0);
+      if (cart.shipping.type=='US' && total_items > 2) {
+        cart.shipping.cost = Math.ceil(total_items / 2) * parseFloat($activeShipping.attr('data-cost'));
+        cart.shipping.quantity = Math.ceil(total_items / 2);
+      }
+      _saveCart();
+      _showCart("Nope");
+    }
+  }
   // Build PayPal form and submit checkout
   function _checkoutCart(e) {
     // Open Checkout with further options:
     stripeCheckout.open({
       name: 'Firebelly Checkout',
       // description: 'Shop',
-      amount: 2000,
+      amount: cart.total * 100,
+      billingAddress: true,
       shippingAddress: true
     });
     e.preventDefault();
 
+    // Old PayPal form that sends user off to PayPal checkout
     // var $form = $('form.cart-wrap');
     // for(var i = 0; i < cart.length; ++i) {
     //   $("<input type='hidden' name='quantity_" + (i+1) + "' value='" + cart.items[i].quantity + "'>" +

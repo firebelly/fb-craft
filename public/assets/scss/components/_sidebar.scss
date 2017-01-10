@@ -185,6 +185,14 @@ body#store-page .nav-store {
   .cart-shipping {
     margin-bottom: ($padding * 1.5);
   }
+  .shipping-option {
+    opacity: .5;
+    cursor: pointer;
+    &:hover,
+    &.active {
+      opacity: 1;
+    }
+  }
   .line-item {
     position: relative;
     padding-right: 20px;

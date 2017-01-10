@@ -1,10 +1,10 @@
 # START custom redirects, SSL
 <IfModule mod_rewrite.c>
-	RewriteEngine On
-	RewriteBase /
+  RewriteEngine On
+  RewriteBase /
 
-	# No git
-	RedirectMatch 404 /\.git
+  # No git
+  RedirectMatch 404 /\.git
 
   # Ensure consistent www URL
   RewriteCond %{HTTP_HOST} !^www\.firebellydesign\.com [NC]
@@ -14,15 +14,17 @@
   RewriteRule ^(.*)$ https://www.firebellydesign.com/$1 [R=301,L]
 
   # Force SSL
-	RewriteCond %{HTTP:X-Forwarded-SSL} !on
-	RewriteCond %{HTTP_HOST} !^fb-craft\.dev [NC]
-	RewriteCond %{HTTP_HOST} !^craft\.firebelly\.co [NC]
-	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+  RewriteCond %{HTTP:X-Forwarded-SSL} !on
+  RewriteCond %{HTTP_HOST} !^fb-craft\.dev [NC]
+  RewriteCond %{HTTP_HOST} !^craft\.firebelly\.co [NC]
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
-  # redirect root to /work
-	RewriteRule ^$ /work [R=301,L]
+  # redirect root GET requests to /work
+  RewriteCond %{REQUEST_METHOD} !POST
+  RewriteRule ^$ /work [R=301,L]
+
   # redirect people & endeavors single URLs to hashes
-	RewriteRule ^(endeavors|people)/([^/]+)/? /$1#$2 [R=301,NE,L]
+  RewriteRule ^(endeavors|people)/([^/]+)/? /$1#$2 [R=301,NE,L]
 </IfModule>
 # END custom redirects, SSL
 
@@ -58,11 +60,11 @@
 
 # START Craft
 <IfModule mod_rewrite.c>
-	RewriteEngine On
-	# Send would-be 404 requests to Craft
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteCond %{REQUEST_URI} !^/(favicon\.ico|apple-touch-icon.*\.png)$ [NC]
-	RewriteRule (.+) index.php?p=$1 [QSA,L]
+  RewriteEngine On
+  # Send would-be 404 requests to Craft
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !^/(favicon\.ico|apple-touch-icon.*\.png)$ [NC]
+  RewriteRule (.+) index.php?p=$1 [QSA,L]
 </IfModule>
 # END Craft

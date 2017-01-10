@@ -11,11 +11,6 @@ try {
 	exit('Could not find a .env file.');
 }
 
-// Stripe init
-// if (strpos($_SERVER['REQUEST_URI'],'/store') !== FALSE) {
-// 	\Stripe\Stripe::setApiKey(getenv('STRIPE_SECRET_KEY'));
-// }
-
 // Path to your craft/ folder
 $craftPath = '../craft';
 

@@ -13,6 +13,7 @@ return array(
         'imageDriver' => 'imagick',
         'cdnUrl' => getenv('CDN_URL'),
         'stripePublishableKey' => getenv('STRIPE_PUBLISHABLE_KEY'),
+        'enableCsrfProtection' => true,
         'environmentVariables' => array(
             'baseUrl'  => getenv('BASE_URL'),
             'basePath' => getenv('BASE_PATH'),
