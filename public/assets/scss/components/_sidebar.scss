@@ -159,21 +159,38 @@ body#store-page .nav-store {
 }
 
 // Store cart
+.cart-feedback {
+  color: $white;
+  padding: 0 25px;
+  display: none;
+  h3 {
+    color: $white;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+}
 .cart {
   color: $white;
   padding: 0 25px;
   margin-top: ($padding * 4);
   opacity: 0;
   max-height: 0;
+  position: relative;
   overflow: hidden;
   transition: opacity .5s ease-out, max-height .25s;
   &.cart-active {
     opacity: 1;
     max-height: 500px;
   }
-  &.loading {
-    opacity: .5;
+  &.working {
+    .cart-wrap {
+      opacity: .15;
+    }
+    &::before {
+      @extend %working;
+    }
   }
+
   h3 {
     color: $white;
     font-size: 24px;

@@ -353,16 +353,16 @@ $.gdgr.main = (function() {
       locale: 'auto',
       token: function(token, args) {
         data = $('form.cart-wrap').serialize() + '&token=' + JSON.stringify(token) + '&customer=' + JSON.stringify(args) + '&cart=' + JSON.stringify(cart);
+        $('.cart').addClass('working');
         $.post('/', data, function(response) {
           if (response.success) {
             _resetCart();
-            _hideSidebar();
-            alert('Order placed ok! You should receive an email soon.');
+            $('.cart-feedback').html('<h3>Thank you!</h3><p>Your order has been placed. You should receive an email receipt soon.</p>').slideDown();
           } else {
-            alert('There was a transaction error: ' + response.error);
+            $('.cart-feedback').html('<h3>Oh no!</h3><p>There was a transaction error: ' + response.error + '</p>').slideDown();
           }
         }).fail(function() {
-          alert('error!');
+          $('.cart-feedback').html('<h3>Oh no!</h3><p>There was a transaction error. Please try again.</p>').slideDown();
         });
       }
     });
@@ -386,6 +386,8 @@ $.gdgr.main = (function() {
     $(document).on('click', '.cart button.checkout', function(e) {
       _checkoutCart(e);
     });
+
+    // Init cart
     _showCart("Don't show the sidebar, man, we're just, like, init'ing the cart.");
   }
 
@@ -437,15 +439,15 @@ $.gdgr.main = (function() {
   }
   // Build cart in DOM from cart object
   function _showCart(no_open_sidebar) {
-    console.log(cart);
     var cost = 0,
         total = 0,
         total_items = 0,
         html = '';
+    $('.cart-feedback').hide();
     $('.cart-items').empty();
     // Loop through cart items and build rudimentary HTML cart
     if (cart.items.length) {
-      $('.cart').addClass('cart-active').removeClass('loading').find('button.checkout').text('Checkout');
+      $('.cart').addClass('cart-active').removeClass('working').find('button.checkout').text('Checkout');
       for (var i = 0; i < cart.items.length; i++) {
         cost = cart.items[i].quantity * parseFloat(cart.items[i].price);
         $('<li class="line-item" data-stripe-product-id="' + cart.items[i].stripe_product_id + '" data-id="' + i + '"><div class="item">' + cart.items[i].title + '</div> <div class="price">$' + cost + '</div> ' +
@@ -484,15 +486,16 @@ $.gdgr.main = (function() {
   }
   // Build PayPal form and submit checkout
   function _checkoutCart(e) {
-    // Open Checkout with further options:
+    e.preventDefault();
+    $('.cart-feedback').hide();
+
+    // Open Stripe checkout
     stripeCheckout.open({
       name: 'Firebelly Checkout',
-      // description: 'Shop',
       amount: cart.total * 100,
       billingAddress: true,
       shippingAddress: true
     });
-    e.preventDefault();
 
     // Old PayPal form that sends user off to PayPal checkout
     // var $form = $('form.cart-wrap');
