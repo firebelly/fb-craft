@@ -1,4 +1,4 @@
-# START custom redirects, SSL
+# START Custom redirects, SSL
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
@@ -11,22 +11,27 @@
   RewriteCond %{HTTP_HOST} !^fb-craft\.dev [NC]
   RewriteCond %{HTTP_HOST} !^craft\.firebelly\.co [NC]
   RewriteCond %{HTTP_HOST} !^firebelly\.webfactional\.com [NC]
+  RewriteCond %{HTTP_HOST} !^firebelly\.cachefly\.net [NC]
   RewriteRule ^(.*)$ https://www.firebellydesign.com/$1 [R=301,L]
 
   # Force SSL
   RewriteCond %{HTTP:X-Forwarded-SSL} !on
   RewriteCond %{HTTP_HOST} !^fb-craft\.dev [NC]
+  RewriteCond %{HTTP_HOST} !^firebelly\.cachefly\.net [NC]
   RewriteCond %{HTTP_HOST} !^craft\.firebelly\.co [NC]
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
-  # redirect root GET requests to /work
+  # Redirect root GET requests to /work
   RewriteCond %{REQUEST_METHOD} !POST
   RewriteRule ^$ /work [R=301,L]
 
-  # redirect people & endeavors single URLs to hashes
+  # Custom redirects
+	RewriteRule ^flor/? /work/flor-rebrand [R=301,L]
+
+  # Redirect people & endeavors single URLs to hashes
   RewriteRule ^(endeavors|people)/([^/]+)/? /$1#$2 [R=301,NE,L]
 </IfModule>
-# END custom redirects, SSL
+# END Custom redirects, SSL
 
 # START HTTP caching & image expiration & gzip
 <IfModule mod_expires.c>
