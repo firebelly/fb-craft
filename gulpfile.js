@@ -12,6 +12,7 @@ var argv         = require('minimist')(process.argv.slice(2));
 var isProduction = argv.production;
 var notify       = require("gulp-notify");
 var browserSync = require('browser-sync').create();
+var gutil       = require("gulp-util");
 
 // smash CSS!
 gulp.task('styles', function() {
@@ -36,7 +37,7 @@ gulp.task('scripts', function() {
 		])
 		.pipe(include())
 		.pipe(gulpif(!isProduction, sourcemaps.init()))
-		.pipe(uglify())
+		.pipe(uglify().on('error', gutil.log))
 		.pipe(gulp.dest('public/assets/dist/js'))
 		.pipe(gulpif(!isProduction, sourcemaps.write('maps')))
 		.pipe(gulpif(!isProduction, gulp.dest('public/assets/dist/js')))
