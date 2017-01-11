@@ -355,14 +355,15 @@ $.gdgr.main = (function() {
         data = $('form.cart-wrap').serialize() + '&token=' + JSON.stringify(token) + '&customer=' + JSON.stringify(args) + '&cart=' + JSON.stringify(cart);
         $('.cart').addClass('working');
         $.post('/', data, function(response) {
+          setTimeout(function() { $('.cart').removeClass('working'); }, 2500);
           if (response.success) {
             _resetCart();
-            $('.cart-feedback').html('<h3>Thank you!</h3><p>Your order has been placed. You should receive an email receipt soon.</p>').slideDown();
+            $('.cart-feedback').html('<h3>Thank you!</h3><p>Your order has been placed. You should receive an email receipt soon.</p>').slideDown('fast');
           } else {
-            $('.cart-feedback').html('<h3>Oh no!</h3><p>There was a transaction error: ' + response.error + '</p>').slideDown();
+            $('.cart-feedback').html('<h3>Oh no!</h3><p>There was a transaction error: ' + response.error + '</p>').slideDown('fast');
           }
         }).fail(function() {
-          $('.cart-feedback').html('<h3>Oh no!</h3><p>There was a transaction error. Please try again.</p>').slideDown();
+          $('.cart-feedback').html('<h3>Oh no!</h3><p>There was a transaction error. Please try again.</p>').slideDown('fast');
         });
       }
     });

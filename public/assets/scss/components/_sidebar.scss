@@ -161,6 +161,7 @@ body#store-page .nav-store {
 // Store cart
 .cart-feedback {
   color: $white;
+  margin: ($padding * 4) 0;
   padding: 0 25px;
   display: none;
   h3 {
@@ -172,13 +173,13 @@ body#store-page .nav-store {
 .cart {
   color: $white;
   padding: 0 25px;
-  margin-top: ($padding * 4);
   opacity: 0;
   max-height: 0;
   position: relative;
   overflow: hidden;
   transition: opacity .5s ease-out, max-height .25s;
   &.cart-active {
+    margin: ($padding * 4) 0;
     opacity: 1;
     max-height: 500px;
   }
