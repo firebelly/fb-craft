@@ -42,10 +42,13 @@ class FbCacheflyPlugin extends BasePlugin
   public function purgeAsset(AssetFileModel $asset)
   {
     // Make sure we're using cachefly as the CDN (CDNURL is set in .env)
-    if (getenv('CDN_APIKEY') && strpos(getenv('CDN_URL'), 'cachefly') !== FALSE) {
-      // POST to cachefly API to purge the file
+    if (1) {
+      // POST to cachefly API to purge the file (and thumbnails if present)
       $url = 'https://'.getenv('CDN_APIKEY').'@api.cachefly.com/1.0/purge.purge.file';
-      $data = array('files' => base64_encode('/' . $this->getAssetPath($asset)));
+      $data = array('files' => base64_encode('/' . $this->getAssetPath($asset)) . ',' .
+                    base64_encode('/' . $this->getAssetPath($asset, '_hero/')) . ',' .
+                    base64_encode('/' . $this->getAssetPath($asset, '_projectThumb/')) . ',' .
+                    base64_encode('/' . $this->getAssetPath($asset, '_projectThumbSmall/')));
       $options = array(
         'http' => array(
           'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -62,7 +65,7 @@ class FbCacheflyPlugin extends BasePlugin
   }
 
   // Borrowed from https://github.com/jonnnnyw/craft-awss3assets
-  private function getAssetPath(AssetFileModel $asset)
+  private function getAssetPath(AssetFileModel $asset, $transform='')
   {
     if ($asset->getSource()->type != 'Local') {
       throw new Exception(Craft::t('Could not get asset upload path as source is not "Local"'));
@@ -71,7 +74,7 @@ class FbCacheflyPlugin extends BasePlugin
     $sourcePath = $asset->getSource()->settings['path'];
     $folderPath = $asset->getFolder()->path;
 
-    return $sourcePath . $folderPath . $asset->filename;
+    return $sourcePath . $folderPath . $transform . $asset->filename;
   }
 
 }
