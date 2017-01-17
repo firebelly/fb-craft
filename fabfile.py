@@ -15,7 +15,7 @@ env.warn_only = True
 
 def production():
 	env.user = 'firebelly'
-	env.hosts = ['craft.firebelly.co']
+	env.hosts = ['www.firebellydesign.com']
 	env.remotepath = '/home/firebelly/webapps/fb_craft'
 
 def assets():
