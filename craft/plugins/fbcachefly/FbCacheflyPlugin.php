@@ -7,7 +7,7 @@ class FbCacheflyPlugin extends BasePlugin
 
   function getName()
   {
-    return Craft::t('Firebelly CacheFly helper');
+    return Craft::t('Firebelly CacheFly Helper');
   }
 
   function getVersion()
