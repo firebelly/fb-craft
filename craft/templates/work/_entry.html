@@ -15,12 +15,12 @@
       {% if mainImage|length %}
         {% if video|length %}
           <div class="project-banner video">
-            <video autoplay loop poster="{{ craft.config.cdnUrl }}{{ mainImage.getUrl('hero') }}">
+            <video autoplay loop poster="{{ craft.config.cdnUrl }}{{ mainImage.getUrl() }}">
               <source src="{{ craft.config.cdnUrl }}{{ video.getUrl() }}" type="video/mp4">
             </video>
           </div>
         {% else %}
-          <div class="project-banner" style="background-image:url({{ craft.config.cdnUrl }}{{ mainImage.getUrl('hero') }});"></div>
+          <div class="project-banner" style="background-image:url({{ craft.config.cdnUrl }}{{ mainImage.getUrl() }});"></div>
         {% endif %}
       {% endif %}
       <div class="intro clearfix">
@@ -72,7 +72,7 @@
                 <div class="block-html">{{ block.html }}</div>
             {% elseif block.type == "blockImageLink" %}
               {% for image in block.images %}
-                <p><a href="{{ block.imageLinkUrl }}" target="_blank"><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}"></a></p>
+                <p><a href="{{ block.imageLinkUrl }}" target="_blank"><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl() }}" alt="{{ image.title }}"></a></p>
               {% endfor %}
             {% endif %}
         {% endfor %}
