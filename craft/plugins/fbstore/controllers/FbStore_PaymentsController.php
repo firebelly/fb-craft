@@ -21,9 +21,11 @@ class FbStore_PaymentsController extends BaseController
       $this->returnErrorJson('No payment token sent.');
     }
 
-    // Check for INT'L shipping for non-US order
+    // Check for INT'L shipping for non-USA order (or vice versa)
     if ($customer->shipping_address_country_code != 'US' && $cart->shipping->type == 'US') {
-      $this->returnErrorJson('Please select INT\'L shipping for a non-US address.');
+      $this->returnErrorJson('Please select INT\'L shipping for a non-USA address.');
+    } else if ($customer->shipping_address_country_code == 'US' && $cart->shipping->type != 'US') {
+      $this->returnErrorJson('Please select USA shipping for a USA address.');
     }
 
     try {

@@ -4,11 +4,6 @@ namespace Craft;
 
 class FbStorePlugin extends BasePlugin
 {
-  // function init()
-  // {
-  //   require CRAFT_BASE_PATH.'../vendor/autoload.php';
-  // }
-
   function getName()
   {
     return Craft::t('Firebelly Store Orders');
