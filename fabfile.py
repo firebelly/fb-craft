@@ -23,16 +23,16 @@ def assets():
 
 def deploy():
 	update()
-	composer_update()
+	composer_install()
 	# clear_cache()
 
 def update():
 	with cd(env.remotepath):
 		run('git pull origin %s' % env.git_branch)
 
-def composer_update():
+def composer_install():
 	with cd(env.remotepath):
-		run('php70 ~/bin/composer.phar update')
+		run('php70 ~/bin/composer.phar install')
 
 # def clear_cache():
 # 	with cd(env.remotepath):
