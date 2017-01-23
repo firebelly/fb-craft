@@ -15,6 +15,8 @@ class FbStore_PaymentsController extends BaseController
     $token  = json_decode($_POST['token']); // Stripe token->id and token->email
     $customer  = json_decode($_POST['customer']); // customer billing/shipping info sent from Stripe Checkout
     $cart  = json_decode($_POST['cart']); // localstorage cart with line items and shipping info
+    // Set customer email
+    $customer->email = $token->email;
 
     // Check if token was sent
     if (empty($token->id)) {
@@ -35,7 +37,7 @@ class FbStore_PaymentsController extends BaseController
       // Loop through customers to find by email in case they're returning
       $allCustomers = \Stripe\Customer::all()->data;
       foreach ($allCustomers as $chkCustomer) {
-        if ($chkCustomer->email == $token->email) {
+        if ($chkCustomer->email == $customer->email) {
           $stripeCustomer = $chkCustomer;
           // Update payment source
           $stripeCustomer->source = $token->id;
@@ -47,7 +49,7 @@ class FbStore_PaymentsController extends BaseController
       // ...or create new Stripe customer to relate to order
       if (empty($stripeCustomer)) {
         $stripeCustomer = \Stripe\Customer::create(array(
-          'email' => $token->email,
+          'email' => $customer->email,
           'source'  => $token->id
         ));
       }
@@ -98,12 +100,49 @@ class FbStore_PaymentsController extends BaseController
         'source' => $stripeCustomer->sources->data[0]->id
       ));
 
-      // Start of custom order receipt email routine if we ever want more than Stripe emails
-      // $email = new EmailModel();
-      // $email->toEmail = $token->email;
-      // $email->subject = 'New Order';
-      // $email->body    = 'Order received for: {{ user.name }}';
-      // craft()->email->sendEmail($email);
+      // Customer order email
+      $emailSettings = craft()->email->getSettings();
+      $email = new EmailModel();
+      $email->fromEmail = $emailSettings['emailAddress'];
+      $email->fromName = $emailSettings['senderName'];
+      $email->toEmail = $customer->email;
+      $email->subject = 'Your Firebelly Order';
+      $email->body = craft()->templates->render('store/order_email_text', array(
+        'customer' => $customer,
+        'cart' => $cart,
+        'card' => $stripeCustomer->sources->data[0],
+      ));
+      $html_order_email = craft()->templates->render('store/order_email', array(
+        'customer' => $customer,
+        'cart' => $cart,
+        'card' => $stripeCustomer->sources->data[0],
+      ));
+      // Inline the CSS
+      $emogrifier = new \Pelago\Emogrifier($html_order_email);
+      $email->htmlBody = $emogrifier->emogrify();
+      craft()->email->sendEmail($email);
+
+      // Shop order email
+      $email->toEmail = 'nate@firebellydesign.com';
+      $email->cc = array(
+          array('email' => 'chelsey@firebellydesign.com', 'name' => 'Chelsey Roy'),
+          array('email' => 'dawn@firebellydesign.com', 'name' => 'Dawn Hancock'),
+      );
+      $email->subject = 'New Firebelly order for ' . $customer->billing_name;
+      $email->body = craft()->templates->render('store/order_email_shop_text', array(
+        'customer' => $customer,
+        'cart' => $cart,
+        'card' => $stripeCustomer->sources->data[0],
+      ));
+      $html_order_email = craft()->templates->render('store/order_email_shop', array(
+        'customer' => $customer,
+        'cart' => $cart,
+        'card' => $stripeCustomer->sources->data[0],
+      ));
+      // Inline the CSS
+      $emogrifier = new \Pelago\Emogrifier($html_order_email);
+      $email->htmlBody = $emogrifier->emogrify();
+      craft()->email->sendEmail($email);
 
     } catch (\Stripe\Error\Base $e) {
       $this->returnErrorJson($e->getMessage());

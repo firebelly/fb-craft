@@ -50,7 +50,7 @@ $.gdgr.main = (function() {
       }
     });
 
-    // Scroll down to hash afer page load
+    // Scroll down to hash after page load
     // $(window).load(function() {
     //   if (window.location.hash) {
     //     var el = $(window.location.hash);
@@ -355,21 +355,23 @@ $.gdgr.main = (function() {
         data = $('form.cart-wrap').serialize() + '&token=' + JSON.stringify(token) + '&customer=' + JSON.stringify(args) + '&cart=' + JSON.stringify(cart);
         $('.cart').addClass('working');
         $.post('/', data, function(response) {
-          setTimeout(function() { $('.cart').removeClass('working'); }, 2500);
           if (response.success) {
             _resetCart();
             $('.cart-feedback').html('<h3>Thank you!</h3><p>Your order is confirmed and an email receipt is on the way.</p>').slideDown('fast');
           } else {
             $('.cart-feedback').html('<h3>Oh no!</h3><p>There was a transaction error: ' + response.error + '</p>').slideDown('fast');
+            setTimeout(function() { $('.cart').removeClass('working'); }, 2500);
           }
         }).fail(function() {
           $('.cart-feedback').html('<h3>Oh no!</h3><p>There was a transaction error. Please try again.</p>').slideDown('fast');
-        });
+          setTimeout(function() { $('.cart').removeClass('working'); }, 2500);
+      });
       }
     });
 
     // Delete cart items
-    $(document).on('click', '.cart .delete', function() {
+    $(document).on('click', '.cart .delete', function(e) {
+      e.preventDefault();
       _removeFromCart($(this).attr('data-id'));
     });
 
@@ -408,8 +410,8 @@ $.gdgr.main = (function() {
     } else {
       exists[0].quantity +=1;
     }
-    _updateCartShipping();
     _showCart();
+    _updateCartShipping();
   }
   // Remove item from cart
   function _removeFromCart(id) {
