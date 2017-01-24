@@ -3,13 +3,7 @@
   <h2>A new order has been received:</h2>
 
   <h3>Order items</h3>
-  <ul>
-    {% for item in cart.items %}
-      <li>{{ item.quantity }} x {{ item.title }} @ ${{ "%02d"|format(item.price) }}: ${{ "%02d"|format(item.quantity * item.price) }}</li>
-    {% endfor %}
-    <li>{{ cart.shipping.type }} Shipping: ${{ "%02d"|format(cart.shipping.cost) }}</li>
-  </ul>
-  <p><strong>Order total: ${{ "%02d"|format(cart.total) }}</strong></p>
+  {% include 'store/_order_items' %}
   <p>Paid with {{ card.brand }} *{{ card.last4 }}</p>
 
   <h3>Ship to</h3>
@@ -35,6 +29,6 @@
 
   <br>
 
-  <p>Stripe orders dashboard: https://dashboard.stripe.com/orders</p>
+  <p><strong>Stripe orders dashboard:</strong> https://dashboard.stripe.com/orders</p>
 
 {% endblock %}

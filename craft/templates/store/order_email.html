@@ -5,13 +5,7 @@
   <p>We'll get your items to you post-haste.</p>
 
   <h3>Your order</h3>
-  <ul>
-    {% for item in cart.items %}
-      <li>{{ item.quantity }} x {{ item.title }} @ ${{ "%02d"|format(item.price) }}: ${{ "%02d"|format(item.quantity * item.price) }}</li>
-    {% endfor %}
-    <li>{{ cart.shipping.type }} Shipping: ${{ "%02d"|format(cart.shipping.cost) }}</li>
-  </ul>
-  <p><strong>Order total: ${{ "%02d"|format(cart.total) }}</strong></p>
+  {% include 'store/_order_items' %}
   <p>Paid with {{ card.brand }} *{{ card.last4 }}</p>
 
   <h3>Ship to</h3>
@@ -27,5 +21,4 @@
   <br>
 
   <p>Something not right? Please reply to this email to let us know. Thanks!</p>
-
 {% endblock %}

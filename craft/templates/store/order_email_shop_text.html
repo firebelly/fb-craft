@@ -3,10 +3,10 @@ A new order has been received:
 Order items
 -----------
 {% for item in cart.items %}
-{{ item.quantity }} x {{ item.title }} @ ${{ "%02d"|format(item.price) }}: ${{ "%02d"|format(item.quantity * item.price) }}
+{{ item.quantity }} x {{ item.title }} @ ${{ "%.0f"|format(item.price) }}: ${{ "%.0f"|format(item.quantity * item.price) }}
 {% endfor %}
-{{ cart.shipping.type }} Shipping: ${{ "%02d"|format(cart.shipping.cost) }}
-Order total: ${{ "%02d"|format(cart.total) }}
+{{ cart.shipping.type }} Shipping: ${{ "%.0f"|format(cart.shipping.cost) }}
+Order total: ${{ "%.0f"|format(cart.total) }}
 Paid with {{ card.brand }} *{{ card.last4 }}
 
 Ship to

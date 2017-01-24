@@ -153,10 +153,9 @@
         clear:both;
       }
       .main-content {
-        padding: 20px;
+        padding: 20px 0;
       }
-      .header table,
-      .column table {
+      table {
         width: 100%;
       }
       .clear {
@@ -168,10 +167,43 @@
         float: none;
       }
 
+      /* -------------------------------------
+          ORDER ITEMS
+      ------------------------------------- */
+      table.order-items {
+        border-collapse: collapse;
+        font-size: 14px;
+        line-height: 1.2;
+      }
+      table.order-items th {
+        font-size: 10px;
+        padding: 0;
+      }
+      table.order-items td {
+        padding: 8px 0 4px 0;
+      }
+      table.order-items tr.order-item td {
+        border-bottom: 1px solid #DDE2E8;
+        padding: 8px 0;
+      }
+      .ta-l {
+        text-align: left;
+      }
+      .ta-r {
+        text-align: right;
+      }
+      .ta-c {
+        text-align: center;
+      }
+
+
       /* ----------------------------------------
           For clients that support media queries
       ------------------------------------------- */
       @media only screen and (min-width: 600px) {
+        table.order-items th {
+          font-size: 14px!important;
+        }
         .column {
           width: 300px!important;
           float: left!important;
@@ -180,9 +212,6 @@
           padding: 0!important;
           margin: 0 auto!important;
           max-width: 600px!important;
-        }
-        .main-content {
-          padding: 20px 0!important;
         }
         table.footer-f {
           display: table!important;
