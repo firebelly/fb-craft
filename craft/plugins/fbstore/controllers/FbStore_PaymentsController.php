@@ -95,7 +95,7 @@ class FbStore_PaymentsController extends BaseController
       ));
 
       // Submit payment for order using customer payment source
-      $order->pay(array(
+      $order_details = $order->pay(array(
         'customer' => $stripeCustomer->id,
         'source' => $stripeCustomer->sources->data[0]->id
       ));
@@ -124,10 +124,13 @@ class FbStore_PaymentsController extends BaseController
 
       // Shop order email
       $email->toEmail = 'nate@firebellydesign.com';
-      $email->cc = array(
-          array('email' => 'chelsey@firebellydesign.com', 'name' => 'Chelsey Roy'),
-          array('email' => 'dawn@firebellydesign.com', 'name' => 'Dawn Hancock'),
-      );
+      $email->replyTo = $customer->email;
+      if (!craft()->config->get('devMode')) {
+        $email->cc = array(
+            array('email' => 'chelsey@firebellydesign.com', 'name' => 'Chelsey Roy'),
+            array('email' => 'dawn@firebellydesign.com', 'name' => 'Dawn Hancock'),
+        );
+      }
       $email->subject = 'New Firebelly order for ' . $customer->billing_name;
       $email->body = craft()->templates->render('store/order_email_shop_text', array(
         'customer' => $customer,
