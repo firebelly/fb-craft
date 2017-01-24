@@ -41,8 +41,8 @@ class FbCacheflyPlugin extends BasePlugin
 
   public function purgeAsset(AssetFileModel $asset)
   {
-    // Make sure we're using cachefly as the CDN (CDNURL is set in .env)
-    if (1) {
+    // Make sure we're using cachefly as the CDN (CDN_URL is set in .env)
+    if (getenv('CDN_APIKEY') && strpos(getenv('CDN_URL'), 'cachefly') !== FALSE) {
       // POST to cachefly API to purge the file (and thumbnails if present)
       $url = 'https://'.getenv('CDN_APIKEY').'@api.cachefly.com/1.0/purge.purge.file';
       $data = array('files' => base64_encode('/' . $this->getAssetPath($asset)) . ',' .
@@ -56,7 +56,7 @@ class FbCacheflyPlugin extends BasePlugin
           'content' => http_build_query($data)
           )
         );
-      $context  = stream_context_create($options);
+      $context = stream_context_create($options);
       $result = file_get_contents($url, false, $context);
       if ($result === FALSE) {
         throw new CraftException( Craft::t('Unable to purge cachefly API for '.$this->getAssetPath($asset)) );
