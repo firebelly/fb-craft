@@ -16,7 +16,7 @@
         {% if video|length %}
           <div class="project-banner video">
             <video autoplay loop poster="{{ craft.config.cdnUrl }}{{ mainImage.getUrl() }}">
-              <source src="{{ craft.config.cdnUrl }}{{ video.getUrl() }}" type="video/mp4">
+              <source src="{{ video.getUrl() }}" type="video/mp4">
             </video>
           </div>
         {% else %}
