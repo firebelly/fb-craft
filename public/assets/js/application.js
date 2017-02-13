@@ -21,7 +21,8 @@ $.gdgr.main = (function() {
       adminStatus = false,
       isAnimating = false,
       cart,
-      stripeCheckout;
+      stripeCheckout,
+      numLazyLoaded = 0;
 
   function _init() {
     $('#flash').hide().css('visibility','visible').fadeIn();
@@ -288,8 +289,19 @@ $.gdgr.main = (function() {
   function _initLazyload() {
     $('.lazy').attr('title','').lazyload({
       effect : 'fadeIn',
-      threshold: 1500
+      threshold: 500
     });
+
+    // On single pages, load *all* images after scrolling down a bit
+    if ($('body.single').length) {
+      $('.lazy').on('load', function() {
+        numLazyLoaded++;
+        $(this).addClass('lazyloaded');
+        if (numLazyLoaded > 3 && $('body.single').length) {
+          $('.lazy:not(.lazyloaded)').trigger('appear');
+        }
+      });
+    }
   }
 
   function _filterProjects(filter) {
