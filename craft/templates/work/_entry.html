@@ -6,18 +6,15 @@
 
 {% set bodyClass = 'single' %}
 {% set mainImage = entry.mainImage.last() %}
-{% set video = entry.video.last() %}
 
 {% block content %}
   {% cache unless currentUser %}
   <article class="content-block single-project" data-id="{{ entry.id }}">
     <section class="content interior">
       {% if mainImage|length %}
-        {% if video|length %}
+        {% if entry.vimeoHeaderVideo %}
           <div class="project-banner video">
-            <video autoplay loop poster="{{ craft.config.cdnUrl }}{{ mainImage.getUrl() }}">
-              <source src="{{ video.getUrl() }}" type="video/mp4">
-            </video>
+            <iframe src="https://player.vimeo.com/video/{{ entry.vimeoHeaderVideo|replace('/[^0-9+]/', '') }}?background=1;autoplay=1&loop=1&title=0&byline=0&portrait=0" width="1245" height="700" frameborder="0"></iframe>
           </div>
         {% else %}
           <div class="project-banner" style="background-image:url({{ craft.config.cdnUrl }}{{ mainImage.getUrl() }});"></div>
