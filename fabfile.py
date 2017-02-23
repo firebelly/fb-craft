@@ -14,9 +14,11 @@ env.git_branch = 'master'
 env.warn_only = True
 
 def production():
-	env.user = 'firebelly'
 	env.hosts = ['www.firebellydesign.com']
-	env.remotepath = '/home/firebelly/webapps/fb_craft'
+	env.user = 'deployer'
+	env.remotepath = '/var/www/fb-craft/'
+	# env.user = 'firebelly'
+	# env.remotepath = '/home/firebelly/webapps/fb_craft'
 
 def assets():
 	local('node_modules/.bin/gulp --production')
@@ -32,7 +34,8 @@ def update():
 
 def composer_install():
 	with cd(env.remotepath):
-		run('php70 ~/bin/composer.phar install')
+		run('~/bin/composer install')
+		# run('php70 ~/bin/composer.phar install')
 
 # def clear_cache():
 # 	with cd(env.remotepath):
