@@ -66,14 +66,14 @@
                 {% if image.filename matches '{\.gif$}' %}
                   <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl() }}" alt="{{ image.title }}"></p>
                 {% else %}
-                  <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}"></p>
+                  <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl() }}" alt="{{ image.title }}"></p>
                 {% endif %}
               {% endfor %}
             {% elseif block.type == "blockHtml" %}
                 <div class="block-html">{{ block.html }}</div>
             {% elseif block.type == "blockImageLink" %}
               {% for image in block.images %}
-                <p><a href="{{ block.imageLinkUrl }}" target="_blank"><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}"></a></p>
+                <p><a href="{{ block.imageLinkUrl }}" target="_blank"><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl() }}" alt="{{ image.title }}"></a></p>
               {% endfor %}
             {% endif %}
         {% endfor %}
