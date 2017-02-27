@@ -63,7 +63,11 @@
               </div>
             {% elseif block.type == "blockImages" %}
               {% for image in block.images %}
-                <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}"></p>
+                {% if image.filename matches '{\.gif$}' %}
+                  <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl() }}" alt="{{ image.title }}"></p>
+                {% else %}
+                  <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}"></p>
+                {% endif %}
               {% endfor %}
             {% elseif block.type == "blockHtml" %}
                 <div class="block-html">{{ block.html }}</div>
