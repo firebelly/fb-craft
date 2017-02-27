@@ -17,7 +17,7 @@
             <iframe src="https://player.vimeo.com/video/{{ entry.vimeoHeaderVideo|replace('/[^0-9+]/', '') }}?background=1;autoplay=1&loop=1&title=0&byline=0&portrait=0" width="1245" height="700" frameborder="0"></iframe>
           </div>
         {% else %}
-          <div class="project-banner" style="background-image:url({{ craft.config.cdnUrl }}{{ mainImage.getUrl() }});"></div>
+          <div class="project-banner" style="background-image:url({{ craft.config.cdnUrl }}{{ mainImage.getUrl('hero') }});"></div>
         {% endif %}
       {% endif %}
       <div class="intro clearfix">
@@ -63,13 +63,13 @@
               </div>
             {% elseif block.type == "blockImages" %}
               {% for image in block.images %}
-                <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl() }}" alt="{{ image.title }}"></p>
+                <p><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}"></p>
               {% endfor %}
             {% elseif block.type == "blockHtml" %}
                 <div class="block-html">{{ block.html }}</div>
             {% elseif block.type == "blockImageLink" %}
               {% for image in block.images %}
-                <p><a href="{{ block.imageLinkUrl }}" target="_blank"><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl() }}" alt="{{ image.title }}"></a></p>
+                <p><a href="{{ block.imageLinkUrl }}" target="_blank"><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ image.title }}"></a></p>
               {% endfor %}
             {% endif %}
         {% endfor %}

@@ -81,9 +81,9 @@
           <span class="tcon-visuallyhidden">toggle project nav</span>
         </button>
       </header>
-      {% if craft.request.url != '/work' %}
+      {% cache globally using key "portfolio-sidebar" %}
         {% include "partials/_portfolio_sidebar" %}
-      {% endif %}
+      {% endcache%}
     </div><!-- END #project-side -->
 
     <section id='page'>
