@@ -1,4 +1,4 @@
-{% set headerImage = entry.headerImage.last() %}
+{% set headerImage = entry.headerImage[0] ?? null %}
 <article class="news-article listing clearfix">
   {% if headerImage|length %}
     <div class="featured-image" style="background-image:url({{ headerImage.getUrl('hero') }});"></div>

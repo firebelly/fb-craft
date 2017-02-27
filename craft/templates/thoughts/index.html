@@ -3,9 +3,20 @@
 
 {% if tag is defined %}
   {% set tag = craft.tags.slug(tag).first() %}
-  {% set thoughtEntries = craft.entries.section('thoughts').relatedTo(tag) %}
+  {% set thoughtEntries = craft.entries({
+    section: 'thoughts',
+    relatedTo: tag,
+    with: [
+      'headerImage'
+    ]
+  }) %}
 {% else %}
-  {% set thoughtEntries = craft.entries.section('thoughts') %}
+  {% set thoughtEntries = craft.entries({
+    section: 'thoughts',
+    with: [
+      'headerImage'
+    ]
+  }) %}
 {% endif %}
 
 {% block content %}

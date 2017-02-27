@@ -12,11 +12,19 @@
 
   <section class="portfolio">
     <ul class="projects filter-items clearfix">
+      {% set entries = craft.entries({
+        section: 'work',
+        with: [
+          'altImage',
+          'mainImage'
+        ]
+      }) %}
       {% for entry in craft.entries.section('work') %}
-        {% if entry.altImage|length %}
-          {% set mainImage = entry.altImage.first() %}
+        {% set altImage = entry.altImage[0] ?? null %}
+        {% if entry.altImage %}
+          {% set mainImage = altImage %}
         {% else %}
-          {% set mainImage = entry.mainImage.first() %}
+          {% set mainImage = entry.mainImage[0] ?? null %}
         {% endif %}
         <li class="project interior" data-services="{% for service in entry.services %}{{ service.slug }} {% endfor %}" data-industry="{% for industry in entry.industry %}{{ industry.slug }} {% endfor %}">
           <article>
