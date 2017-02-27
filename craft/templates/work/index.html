@@ -10,16 +10,22 @@
     <h2>We create positive human experiences<br> through beautiful, sustainable design.</h2>
   </header>
 
-  <section class="portfolio">
+  <section class="portfolio">foobar
     <ul class="projects filter-items clearfix">
       {% set entries = craft.entries({
-        section: 'work',
-        with: [
-          'altImage',
-          'mainImage'
-        ]
+          section: 'work',
+          with: [
+            'services',
+            'industry',
+            ['altImage', {
+                withTransforms: ['projectThumb']
+            }],
+            ['mainImage', {
+                withTransforms: ['projectThumb']
+            }]
+          ]
       }) %}
-      {% for entry in craft.entries.section('work') %}
+      {% for entry in entries %}
         {% set altImage = entry.altImage[0] ?? null %}
         {% if entry.altImage %}
           {% set mainImage = altImage %}
@@ -28,7 +34,7 @@
         {% endif %}
         <li class="project interior" data-services="{% for service in entry.services %}{{ service.slug }} {% endfor %}" data-industry="{% for industry in entry.industry %}{{ industry.slug }} {% endfor %}">
           <article>
-            {% if mainImage|length %}
+            {% if mainImage %}
               <div class="project-image lazy" style="background-image:url('/assets/images/gray.gif');" data-original="{{ craft.config.cdnUrl }}{{ mainImage.getUrl('projectThumb') }}"></div>
             {% endif %}
             <header>
@@ -52,12 +58,10 @@
     <h1>Filter:</h1>
     <ul class="filter-set">
       <li class="show-all"><a href="#filter" data-filter="" class="selected">all</a></li>
-      {% set industries = craft.categories.group('industry').find() %}
+      {% set entryIds = craft.entries({section: 'work'}).ids() %}
+      {% set industries = craft.categories.relatedTo({ sourceElement: entryIds }).group('industry').find() %}
       {% for industry in industries %}
-        {% set entryCount = craft.entries.relatedTo(industry).total() %}
-        {% if entryCount > 0 %}
-          <li><a href="#filter" data-filter="{{ industry.slug }}" class="{{ industry.slug }}">{{ industry.title }}</a></li>
-        {% endif %}
+        <li><a href="#filter" data-filter="{{ industry.slug }}" class="{{ industry.slug }}">{{ industry.title }}</a></li>
       {% endfor %}
     </ul>
   </section>
