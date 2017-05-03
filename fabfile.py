@@ -1,9 +1,8 @@
 from fabric.api import *
 import os
-from os.path import join,dirname
-from dotenv import load_dotenv
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+from dotenv import Dotenv
+dotenv = Dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+os.environ.update(dotenv)
 
 env.hosts = ['craft.firebelly.co']
 env.user = 'firebelly'
