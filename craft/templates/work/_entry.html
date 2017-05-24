@@ -14,7 +14,7 @@
       {% if mainImage|length %}
         {% if entry.vimeoHeaderVideo %}
           <div class="project-banner video">
-            <iframe src="https://player.vimeo.com/video/{{ entry.vimeoHeaderVideo|replace('/[^0-9+]/', '') }}?background=1;autoplay=1&loop=1&title=0&byline=0&portrait=0" width="1245" height="700" frameborder="0"></iframe>
+            <iframe src="https://player.vimeo.com/video/{{ entry.vimeoHeaderVideo|replace('/[^0-9+]/', '') }}?background=1;autoplay=1&autopause=0&loop=1&title=0&byline=0&portrait=0" width="1245" height="700" frameborder="0"></iframe>
           </div>
         {% else %}
           <div class="project-banner" style="background-image:url({{ craft.config.cdnUrl }}{{ mainImage.getUrl('hero') }});"></div>
