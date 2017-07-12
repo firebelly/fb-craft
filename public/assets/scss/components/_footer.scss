@@ -45,6 +45,15 @@
       background: $black;
       position: absolute;
     }
+    a {
+      color: $black;
+      @extend %title;
+      letter-spacing: 0;
+      text-transform: capitalize;
+      &:hover {
+        color: $black-fade;
+      }
+    }
   }
 
   p, a, li {
