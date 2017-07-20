@@ -956,7 +956,7 @@ class TemplatesService extends BaseApplicationComponent
 		// Otherwise maybe it's a plugin template?
 
 		// Only attempt to match against a plugin's templates if this is a CP or action request.
-		if (craft()->request->isCpRequest() || craft()->request->isActionRequest())
+		if ($this->getTemplateMode() === TemplateMode::CP || craft()->request->isActionRequest())
 		{
 			// Sanitize
 			$name = craft()->request->decodePathInfo($name);
@@ -1603,7 +1603,7 @@ class TemplatesService extends BaseApplicationComponent
 
 		$label = HtmlHelper::encode($context['element']);
 
-		$html .= '" data-id="'.$context['element']->id.'" data-locale="'.$context['element']->locale.'" data-status="'.$context['element']->getStatus().'" data-label="'.$label.'" data-url="'.$context['element']->getUrl().'"';
+		$html .= '" data-id="'.$context['element']->id.'" data-locale="'.$context['element']->locale.'" data-status="'.$context['element']->getStatus().'" data-label="'.$label.'" data-url="'.HtmlHelper::encode($context['element']->getUrl()).'"';
 
 		if ($context['element']->level)
 		{
