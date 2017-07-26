@@ -2,6 +2,7 @@ craft/storage/runtime/*
 craft/storage/backups/*
 public/assets/bower_components/*
 public/uploads/*
+craft/app
 
 .DS_Store
 .scss-cache/*
