@@ -27,7 +27,6 @@
 
   # Custom redirects
   RewriteRule ^flor/? /work/flor-rebrand [R=301,L]
-  RewriteRule ^careers/? /thoughts/careers [R=302,L]
 
   # Redirect people & endeavors single URLs to hashes
   RewriteRule ^(endeavors|people)/([^/]+)/? /$1#$2 [R=301,NE,L]
