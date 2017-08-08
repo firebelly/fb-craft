@@ -38,7 +38,6 @@ def composer_install():
 		run('~/bin/composer install')
 
 def clear_cache():
-	if ()
 	run ('curl -vs -o /dev/null {0}://{1}/actions/cacheClear/clear?key=fbclear 2>&1'.format(env.remote_protocol, env.hosts[0]))
 
 def pushdb():
