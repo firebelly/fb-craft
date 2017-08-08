@@ -38,7 +38,7 @@ def composer_install():
 		run('~/bin/composer install')
 
 def clear_cache():
-	run ('curl -vs -o /dev/null {0}://{1}/actions/cacheClear/clear?key=fbclear 2>&1'.format(env.remote_protocol, env.hosts[0]))
+	run ('curl -vs -o /dev/null {0}://{1}/actions/cacheClear/clear?key=fbclear > /dev/null 2>&1'.format(env.remote_protocol, env.hosts[0]))
 
 def pushdb():
 	local("mysqldump -u "+os.environ.get('DB_USER')+" -p'"+os.environ.get('DB_PASS') +
