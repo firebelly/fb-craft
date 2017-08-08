@@ -28,6 +28,12 @@ class CacheClearController extends BaseController {
 
 		craft()->templateCache->deleteAllCaches();
 
+		// Check for htmlcache plugin and clear also
+		$htmlcache_plugin = craft()->plugins->getPlugin('htmlcache', false);
+		if ($htmlcache_plugin->isInstalled && $htmlcache_plugin->isEnabled) {
+			craft()->htmlcache_htmlcache->clearCacheFiles();
+		}
+
 		if (craft()->request->getPost('redirect')) {
 			$this->redirectToPostedUrl();
 		}
