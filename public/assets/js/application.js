@@ -153,7 +153,7 @@ $.gdgr.main = (function() {
           container : $('#project-side .projects'),
           effect : 'fadeIn',
         });
-        $('#project-side').addClass('lazy-loaded')
+        $('#project-side').addClass('lazy-loaded');
       }
 
       $('body, #page, .site-header, .site-footer').toggleClass('project-side-open');
@@ -289,19 +289,22 @@ $.gdgr.main = (function() {
   function _initLazyload() {
     $('.lazy').attr('title','').lazyload({
       effect : 'fadeIn',
-      threshold: 500
-    });
-
-    // On single pages, load *all* images after scrolling down a bit
-    if ($('body.single').length) {
-      $('.lazy').on('load', function() {
+      threshold: 500,
+      load: function() {
+        if (numLazyLoaded==-1) return; // set to -1 after all lazy images are triggered to load
         numLazyLoaded++;
         $(this).addClass('lazyloaded');
-        if (numLazyLoaded > 3 && $('body.single').length) {
+        // On single pages, load *all* images after 3 images have loaded, otherwise wait for 12
+        if ((numLazyLoaded > 3 && $('body.single').length) ||
+            numLazyLoaded > 12) {
           $('.lazy:not(.lazyloaded)').trigger('appear');
+          numLazyLoaded = -1;
         }
-      });
-    }
+      }
+    });
+    // console.log('baz');
+    // $('.lazy').on('load', function() {
+    // });
   }
 
   function _filterProjects(filter) {
