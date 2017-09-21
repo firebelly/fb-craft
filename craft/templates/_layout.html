@@ -44,7 +44,7 @@
 </head>
 
 <body class="{% if bodyClass is defined %}{{ bodyClass }}{% else %}index{% endif %}" id="{% if bodyId is defined %}{{ bodyId }}{% else %}{{ craft.request.getSegment(1)}}-page{% endif %}">
-  <header class="site-header clearfix" aria-role="banner">
+  <header class="site-header clearfix" role="banner">
     <h1 id="logo">
       <a href="/work">Firebelly</a>
     </h1>
@@ -59,7 +59,7 @@
       <span class="tcon-visuallyhidden">toggle project nav</span>
     </button>
   </header>
-  <div id="wrapper" aria-role="main">
+  <div id="wrapper" role="main">
     <div id="side">
       <button type="button" class="menu-toggle tcon tcon-no-animate tcon-menu--xcross xcross-open" aria-label="toggle menu">
         <span class="tcon-menu__lines" aria-hidden="true"></span>
@@ -90,7 +90,7 @@
       {% block content %}{% endblock %}
     </section><!-- END #page -->
 
-    <footer class="site-footer" aria-role="contentinfo">
+    <footer class="site-footer" role="contentinfo">
       {% include "/partials/_footer" %}
     </footer>
   </div> <!-- END #wrapper -->
