@@ -28,7 +28,7 @@
                 <h3>{{ entry.rolloverSubtitle }}</h3>
               {% endif %}
             </header>
-            <a class="view-project" href="{{ entry.url }}"></a>
+            <a aria-label="{{ entry.title }}: {{ entry.rolloverSubtitle }}" class="view-project" href="{{ entry.url }}"></a>
           </article>
         </li>
       {% endif %}
