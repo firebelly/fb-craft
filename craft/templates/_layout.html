@@ -19,6 +19,12 @@
 
   <script src="https://checkout.stripe.com/checkout.js"></script>
 
+  {% if mainImage is defined %}
+    <meta property="og:image" content="{{ mainImage.getUrl('hero') }}"/>
+  {% else %}
+    <meta property="og:image" content=""/>
+  {% endif %}
+
   {#
   todo: fb meta tags
   <%= display_meta_tags image: @page_image, og: {
