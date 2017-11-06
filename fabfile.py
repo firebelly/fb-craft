@@ -21,7 +21,7 @@ def assets():
   local('npx gulp --production')
 
 def devsetup():
-  print "Install composer, node and bower assets...\n"
+  print "Installing composer, node and bower assets...\n"
   local('composer install')
   local('npm install')
   local('cd public/assets && bower install')
