@@ -59,4 +59,17 @@
     list-style: decimal;
   }
 
+  em {
+    font-style: italic;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+
+  strong em, em strong {
+    font-style: italic;
+    font-weight: bold;
+  }
+
 }
