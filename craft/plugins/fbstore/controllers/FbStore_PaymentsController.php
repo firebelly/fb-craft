@@ -127,7 +127,6 @@ class FbStore_PaymentsController extends BaseController
       $email->replyTo = $customer->email;
       if (!craft()->config->get('devMode')) {
         $email->cc = array(
-            array('email' => 'chelsey@firebellydesign.com', 'name' => 'Chelsey Roy'),
             array('email' => 'dawn@firebellydesign.com', 'name' => 'Dawn Hancock'),
         );
       }
