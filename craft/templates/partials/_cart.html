@@ -1,6 +1,6 @@
 <section class="cart">
   <h3>Your Cart:</h3>
-  <form class="cart-wrap" method="post" data-stripe-publishable-key="{{ craft.config.stripePublishableKey }}">
+  <form action="/store" class="cart-wrap" method="post" data-stripe-publishable-key="{{ craft.config.stripePublishableKey }}">
     <input type="hidden" name="action" value="fbStore/payments/charge">
     <ul class="cart-items"></ul>
     <button type="submit" class="submit checkout">Checkout</button>
