@@ -369,7 +369,7 @@ $.gdgr.main = (function() {
       token: function(token, args) {
         data = $('form.cart-wrap').serialize() + '&token=' + JSON.stringify(token) + '&customer=' + JSON.stringify(args) + '&cart=' + JSON.stringify(cart);
         $('.cart').addClass('working');
-        $.post('/', data, function(response) {
+        $.post($('form.cart-wrap').attr('action'), data, function(response) {
           if (response.success) {
             _resetCart();
             $('.cart-feedback').html('<h3>Thank you!</h3><p>Your order is confirmed and an email receipt is on the way.</p>').slideDown('fast');
