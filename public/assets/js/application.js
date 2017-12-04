@@ -35,7 +35,7 @@ $.gdgr.main = (function() {
     });
 
     // Localstorage cart
-    cart = Modernizr.localstorage && localStorage.getItem('Fb.cartWithShipping') ? JSON.parse(localStorage.getItem('Fb.cartWithShipping')) : {items:[],shipping:{type:'US',cost:6,quantity:1}};
+    cart = Modernizr.localstorage && localStorage.getItem('Fb.cartWithShipping') ? JSON.parse(localStorage.getItem('Fb.cartWithShipping')) : {items:[],shipping:{type:'US',cost:8,quantity:1}};
     $('.cart').toggleClass('cart-active', cart.length>0);
 
     // responsive videos
@@ -410,7 +410,7 @@ $.gdgr.main = (function() {
   }
 
   function _resetCart() {
-    cart = {items:[],shipping:{type:'US',cost:6,quantity:1}};
+    cart = {items:[],shipping:{type:'US',cost:8,quantity:1}};
     _saveCart();
     _showCart("Nope");
   }
@@ -477,7 +477,7 @@ $.gdgr.main = (function() {
       }
       total += cart.shipping.cost;
       cart.total = total;
-      $('<li class="cart-shipping active">Shipping: <span class="shipping-option'+(cart.shipping.type=='US' ? ' active' : '')+'" data-type="US" data-label="US" data-cost="6">$'+(Math.ceil(total_items / 2) * 6)+' USA</span> <span class="shipping-option'+(cart.shipping.type=='INTL' ? ' active' : '')+'" data-label="INT\'L" data-type="INTL" data-cost="30">$30 INT\'L</span></li>').appendTo('.cart-items');
+      $('<li class="cart-shipping active">Shipping: <span class="shipping-option'+(cart.shipping.type=='US' ? ' active' : '')+'" data-type="US" data-label="US" data-cost="8">$'+(Math.ceil(total_items / 2) * 8)+' USA</span> <span class="shipping-option'+(cart.shipping.type=='INTL' ? ' active' : '')+'" data-label="INT\'L" data-type="INTL" data-cost="30">$30 INT\'L</span></li>').appendTo('.cart-items');
       $('<li class="cart-total">Total: $' + total + '</li>').appendTo('.cart-items');
       if (typeof no_open_sidebar === 'undefined') {
         _showSidebar();
@@ -492,7 +492,7 @@ $.gdgr.main = (function() {
       cart.shipping.type = $activeShipping.attr('data-type');
       cart.shipping.cost = parseFloat($activeShipping.attr('data-cost'));
       cart.shipping.quantity = 1;
-      // Calculate shipping qty (hacky way of charging $6 per 2 books)
+      // Calculate shipping qty (hacky way of charging $8 per 2 books)
       var total_items = cart.items.reduce(function(a,b){return a + b.quantity;}, 0);
       if (cart.shipping.type=='US' && total_items > 2) {
         cart.shipping.cost = Math.ceil(total_items / 2) * parseFloat($activeShipping.attr('data-cost'));
