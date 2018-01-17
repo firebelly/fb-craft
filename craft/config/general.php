@@ -18,10 +18,14 @@ return array(
         'environmentVariables' => array(
             'baseUrl'  => getenv('BASE_URL'),
             'basePath' => getenv('BASE_PATH'),
-        )
+        ),
+        'defaultSearchTermOptions' => array(
+            'subLeft' => true,
+            'subRight' => true,
+        ),
     ),
 
-    'fb-craft.dev' => array(
+    'fb-craft.craft' => array(
         'devMode' => true,
     ),
 
