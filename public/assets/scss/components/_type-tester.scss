@@ -1,0 +1,178 @@
+// Type Tester Module
+
+.type-tester {
+  position: relative;
+  box-sizing: border-box;
+  
+  *,*::before,*::after {
+    box-sizing: inherit;
+  }
+
+  .-hidden {
+    display: none;
+  }
+  
+  .type-tester-inner {
+    padding: 44px;
+    border: 2px solid #000;
+    border-top-width: 0;
+  }
+  
+  .test-para {
+    display: none;
+    margin: 1em 0 0;
+    padding: .25em 0;
+    line-height: 1.25;
+    position: relative;
+    &.-active {
+      display: block;
+    }
+    &:first-of-type {
+      margin-top: 0;
+    }
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      background: rgba(0,0,0,.15);
+      &::after {
+        display: block;
+      }
+    }
+    &::after {
+      top: 0;
+      left: 0;
+      z-index: 1;
+      color: #fff;
+      display: none;
+      padding: .2em;
+      font-size: .5em;
+      position: absolute;
+      content: 'click to edit';
+      background: rgba(0,0,0,.9);
+    }
+  }
+  
+  .cursor {
+    width: 2px;
+    height: 1.2em;
+    bottom: -.2em;
+    background: #000;
+    position: relative;
+    display: inline-block;
+    animation: blink 1s steps(2, end) infinite;
+  }
+  
+  #typetools {
+    color: #fff;
+    padding: 22px;
+    background: #000;
+    position: relative;
+    
+    h3, label, button {
+      margin: 0;
+      font-size: 12px;
+      font-weight: normal;
+      letter-spacing: .25em;
+      line-height: 1.83333em;
+      text-transform: uppercase;
+    }
+    
+    .typetools-container {
+      display: flex;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      max-width: 600px;
+    }
+
+    .tools-top {
+      flex-basis: 100%;
+      h3 {
+        margin: 0 22px 0 0;
+        display: inline-block;
+      }
+    }
+    
+    .type-tool {
+      margin-top: 22px;
+      padding-right: 20px;
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      
+      #fontSizeLabel {
+        color: #fff;
+      }
+
+      &#textAlignment,
+      &#glyphsTypeToggle {
+        button {
+          color: #fff;
+          height: 22px;
+          border: none;
+          padding: 0 11px;
+          cursor: pointer;
+          background: #000;
+          line-height: 22px;
+          outline: 1px solid #fff;
+          &:hover,
+          &.-active {
+            color: #000;
+            background: #fff;
+          }
+        }
+      }
+      
+      &#glyphsTypeToggle {
+        display: inline-block;
+      }
+    }
+    
+    #colorPairsContainer {
+      
+      .color-pair {
+        padding: 0;
+        width: 22px;
+        height: 22px;
+        border: none;
+        font-size: 12px;
+        cursor: pointer;
+        background: none;
+        line-height: 22px;
+        text-align: center;
+        position: relative;
+        display: inline-block;
+        &:focus {
+          outline: none;
+        }
+        &:hover,
+        &.-active {
+          z-index: 1;
+          outline: 1px solid #fff;
+        }
+      }
+    }
+    
+  }
+  
+  // SVG + Glyph Chart
+  #glyphChart {
+    padding: 0;
+    width: 100%;
+    display: none;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    max-width: 600px;
+    &.-active {
+      display: flex;
+    }
+    li {
+      flex-grow: 1;
+      padding: 11px;
+      list-style: none;
+      text-align: center;
+      // outline: 1px solid #000;
+    }
+  }
+}
