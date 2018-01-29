@@ -106,6 +106,13 @@
     ul, ol {
       max-width: 600px;
     }
+    figure {
+      max-width: 600px;
+      margin: #{$padding * 2} auto $padding;
+      img {
+        vertical-align: top;
+      }
+    }
   }
 
   .post-meta {
