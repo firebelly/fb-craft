@@ -8,6 +8,7 @@
 
   # Ensure consistent www URL
   RewriteCond %{HTTP_HOST} !^www\.firebellydesign\.com [NC]
+  RewriteCond %{HTTP_HOST} !^fb-craft\.localhost [NC]
   RewriteCond %{HTTP_HOST} !^fb-craft\.dev [NC]
   RewriteCond %{HTTP_HOST} !^craft\.firebelly\.co [NC]
   RewriteCond %{HTTP_HOST} !^firebelly\.webfactional\.com [NC]
@@ -16,6 +17,7 @@
 
   # Force SSL
   RewriteCond %{HTTP:X-Forwarded-SSL} !on
+  RewriteCond %{HTTP_HOST} !^fb-craft\.localhost [NC]
   RewriteCond %{HTTP_HOST} !^fb-craft\.dev [NC]
   RewriteCond %{HTTP_HOST} !^firebelly\.cachefly\.net [NC]
   RewriteCond %{HTTP_HOST} !^craft\.firebelly\.co [NC]

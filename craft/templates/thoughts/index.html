@@ -3,20 +3,20 @@
 
 {% if tag is defined %}
   {% set tag = craft.tags.slug(tag).first() %}
-  {% set thoughtEntries = craft.entries({
+  {% paginate craft.entries({
     section: 'thoughts',
     relatedTo: tag,
     with: [
       'headerImage'
     ]
-  }) %}
+  }) as paginationInfo, thoughtEntries %}
 {% else %}
-  {% set thoughtEntries = craft.entries({
+  {% paginate craft.entries({
     section: 'thoughts',
     with: [
       'headerImage'
     ]
-  }) %}
+  }).limit(5) as paginationInfo, thoughtEntries %}
 {% endif %}
 
 {% block content %}
@@ -29,6 +29,26 @@
 		{% for entry in thoughtEntries %}
 			{% include "thoughts/_article" %}
 		{% endfor %}
+
+    <nav class="footer-pagination">
+      <ul>
+        {% if paginationInfo.prevUrl %}
+        <li class="prev">
+          <a rel="prev" href="{{ paginationInfo.prevUrl }}"><span class="arrow">&larr;</span> Previous Page</a>
+        </li>
+        {% else %}
+          <li class="prev disabled"></li>
+        {% endif %}
+        {% if paginationInfo.nextUrl %}
+        <li class="next">
+          <a rel="next" href="{{ paginationInfo.nextUrl }}">Next Page <span class="arrow">&rarr;</span></a>
+        </li>
+        {% else %}
+          <li class="next disabled"></li>
+        {% endif %}
+      </ul>
+    </nav>
+
 	</section>
 	{% endcache %}
 {% endblock %}
