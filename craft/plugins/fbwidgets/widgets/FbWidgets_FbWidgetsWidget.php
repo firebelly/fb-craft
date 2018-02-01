@@ -180,7 +180,7 @@ class FbWidgets_FbWidgetsWidget extends BaseWidget
         $criteria->sectionId = $targetSectionId;
         $criteria->editable = true;
         $criteria->limit = $limit;
-        $criteria->order = 'elements.dateCreated desc';
+        $criteria->order = 'elements.dateUpdated desc';
 
         return $criteria->find();
     }
