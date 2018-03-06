@@ -4,7 +4,6 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "548d509af706c261a8d040713269abe8",
     "content-hash": "d72d2891b40976032f78d0eb4a52d238",
     "packages": [
         {
@@ -12,12 +11,12 @@
             "version": "V1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jjriv/emogrifier.git",
+                "url": "https://github.com/MyIntervals/emogrifier.git",
                 "reference": "a1db453bb504597d821efcc04b21c79a6021e00c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/a1db453bb504597d821efcc04b21c79a6021e00c",
+                "url": "https://api.github.com/repos/MyIntervals/emogrifier/zipball/a1db453bb504597d821efcc04b21c79a6021e00c",
                 "reference": "a1db453bb504597d821efcc04b21c79a6021e00c",
                 "shasum": ""
             },
@@ -65,7 +64,7 @@
             ],
             "description": "Converts CSS styles into inline style attributes in your HTML code",
             "homepage": "http://www.pelagodesign.com/sidecar/emogrifier/",
-            "time": "2017-03-02 12:51:48"
+            "time": "2017-03-02T12:51:48+00:00"
         },
         {
             "name": "stripe/stripe-php",
@@ -120,7 +119,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2017-06-20 01:39:06"
+            "time": "2017-06-20T01:39:06+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -170,7 +169,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2016-09-01 10:05:43"
+            "time": "2016-09-01T10:05:43+00:00"
         }
     ],
     "packages-dev": [],
