@@ -118,6 +118,21 @@
     }
   }
 
+  .block-quote {    
+    padding: ($padding * 6) 25px;
+
+    blockquote {
+      margin: auto;
+      max-width: 800px;
+      text-align: center;
+      font: 36px/#{(41/36)} $font-display;
+      @include min-screen($breakpoint-medium) {
+        font-size: 48px;
+        line-height: (55/48);
+      }
+    }
+  }
+
   .summary, .project-summary {
     &.user-content {
       padding-left: 25px;
@@ -141,7 +156,7 @@
   }
 
   // The project summary
-  .intro{
+  .intro {
     padding: ($padding * 6) 0;
 
     @include min-screen($breakpoint-medium) {

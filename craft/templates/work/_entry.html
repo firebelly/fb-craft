@@ -71,6 +71,8 @@
               {% endfor %}
             {% elseif block.type == "blockHtml" %}
                 <div class="block-html">{{ block.html }}</div>
+            {% elseif block.type == "blockQuote" %}
+                <div class="block-quote" style="color: {{ block.textColor }}; background-color: {{ block.backgroundColor }};"><blockquote>{{ block.quote }}</blockquote></div>
             {% elseif block.type == "blockImageLink" %}
               {% for image in block.images %}
                 <p><a href="{{ block.imageLinkUrl }}" target="_blank"><img class="lazy" src="/assets/images/gray.gif" data-original="{{ craft.config.cdnUrl }}{{ image.getUrl() }}" alt="{{ image.title }}"></a></p>
