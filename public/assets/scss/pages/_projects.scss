@@ -119,14 +119,19 @@
   }
 
   .block-quote {    
-    padding: ($padding * 6) 25px;
+    padding: 25px;
+
+    @include min-screen($breakpoint-small) {
+      padding-top: ($padding * 6);
+      padding-bottom: ($padding * 6);
+    }
 
     blockquote {
       margin: auto;
       max-width: 800px;
       text-align: center;
       font: 36px/#{(41/36)} $font-display;
-      @include min-screen($breakpoint-medium) {
+      @include min-screen($breakpoint-small) {
         font-size: 48px;
         line-height: (55/48);
       }
