@@ -25,7 +25,7 @@ return array(
         ),
     ),
 
-    'fb-craft.craft' => array(
+    'fb-craft.localhost' => array(
         'devMode' => true,
     ),
 
