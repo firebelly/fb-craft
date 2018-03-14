@@ -58,7 +58,7 @@ gulp.task('rev', function() {
 gulp.task('watch', ['build'], function() {
 	// Init BrowserSync
 	browserSync.init({
-		proxy: 'fb-craft.dev',
+		proxy: 'fb-craft.localhost',
 		notify: false,
 		open: false
 	});
