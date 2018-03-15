@@ -119,12 +119,7 @@
   }
 
   .block-quote {    
-    padding: 25px;
-
-    @include min-screen($breakpoint-small) {
-      padding-top: ($padding * 6);
-      padding-bottom: ($padding * 6);
-    }
+    padding: ($padding * 6) 25px;
 
     @include min-screen($breakpoint-medium) {
       padding-top: ($padding * 12);
@@ -170,7 +165,7 @@
     padding: ($padding * 6) 0;
 
     @include min-screen($breakpoint-medium) {
-      padding-bottom: ($padding * 12) 0;
+      padding-bottom: ($padding * 9);
     }
   }
 
@@ -197,7 +192,7 @@
   }
 
   .project-summary {
-    padding: 25px;
+    padding: ($padding * 6) 25px;
 
     h3.number-header {
       margin-bottom: 0;
