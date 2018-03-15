@@ -126,6 +126,11 @@
       padding-bottom: ($padding * 6);
     }
 
+    @include min-screen($breakpoint-medium) {
+      padding-top: ($padding * 12);
+      padding-bottom: ($padding * 12);
+    }
+
     blockquote {
       margin: auto;
       max-width: 800px;
@@ -215,8 +220,8 @@
     margin: 0;
     img {
       width: 100%;
+      display: block;
       max-width: none;
-      vertical-align: top;
     }
   }
 }
