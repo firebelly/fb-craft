@@ -138,6 +138,15 @@
     }
   }
 
+  // A hacky fix for the unwanted borders created around fit-vided video blocks due to iframes and subpixel rounding
+  // Tried hard, but couldn't find a better way.  May god have mercy on my soul.
+  .block-html {
+    overflow: hidden;
+    .video-container {
+      margin: -1px;
+    }
+  }
+
   .summary, .project-summary {
     &.user-content {
       padding-left: 25px;
