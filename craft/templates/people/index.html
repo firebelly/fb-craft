@@ -60,7 +60,7 @@
     <h1>{{ entry.title }}</h1>
     <ul class="option-set clearfix smoothscroll">
       {% for block in entry.people %}
-        <li><a href="#{{ block.personNameFirst|kebab }}">{{ block.personNameFirst }}</a></li>
+        <li><a href="#{{ block.personNameFirst|kebab }}-{{ block.personNameLast|kebab }}">{{ block.personNameFirst }}</a></li>
       {% endfor %}
     </ul>
   </section>

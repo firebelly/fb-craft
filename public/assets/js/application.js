@@ -350,6 +350,20 @@ $.gdgr.main = (function() {
         _openPerson($person);
       }
     });
+
+    // Open a person from the sidebar
+    $('#filters a').on('click', function(e) {
+      e.preventDefault();
+      var $person = $($(this).attr('href'));
+      
+      // Close another open person
+      if ($('.person').not($person).is('.active')) {
+        _closePerson();
+        checkForPersonClosing($person);
+      } else {
+        _openPerson($person);
+      }
+    });
   }
 
   function _closePerson() {
