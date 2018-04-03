@@ -3,6 +3,11 @@
 {% set title = entry.title %}
 {% if entry.seoTitle %}{% set seoTitle = entry.seoTitle %}{% endif %}
 {% if entry.seoDescription %}{% set seoDescription = entry.seoDescription %}{% endif %}
+{% set mobile = {
+    mode: 'fit',
+    width: 800,
+    quality: 75,
+} %}
 
 {% set bodyClass = 'single page people' %}
 
@@ -11,20 +16,38 @@
   <section class="content interior grid">
     {% for block in entry.people %}
       {% set image = block.photo.last() %}
-      <li class="page user-content clearfix person" id="{{ block.personName|kebab }}">
-        <div class="bio -left">
-          <header>
-            <h1>{{ block.personName }}</h1>
-            {% if block.personTitle %}
-              <h2>{{ block.personTitle }}</h2>
-            {% endif %}
-            <div class="links">{{ block.socialLinks }}</div>
-          </header>
-          {{ block.bio }}
+      <li class="page user-content clearfix person" id="{{ block.personNameFirst|kebab }}-{{ block.personNameLast|kebab }}">
+        <div class="toggle-container">
+          <button class="person-toggle"><span class="name">{{ block.personNameFirst }}</span> <span class="tagline">{{ block.tagline }}</span></button>
+          {% if image|length %}
+            <img class="hover-image" src="{{ craft.config.cdnUrl }}{{ image.getUrl(mobile) }}" alt="{{ block.personNameFirst }} {{ block.personNameLast }}">
+          {% endif %}
         </div>
-        {% if image|length %}
-          <div class="portrait -right" style="background-image: url('{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}');"></div>
-        {% endif %}
+        <div class="person-body clearfix">
+          {% if image|length %}
+            <img class="mobile-portrait" src="{{ craft.config.cdnUrl }}{{ image.getUrl(mobile) }}" alt="{{ block.personNameFirst }} {{ block.personNameLast }}">
+          {% endif %}
+          <div class="inner">
+            <div class="bio -left">          
+              <h1>{{ block.personNameFirst }} {{ block.personNameLast }}</h1>
+              {% if block.personTitle %}
+                <h2>{{ block.personTitle }}</h2>
+              {% endif %}
+              {{ block.bio }}
+            </div>
+            <div class="-right">
+              {% if image|length %}
+                <img src="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ block.personNameFirst }} {{ block.personNameLast }}" title="{{ block.personNameFirst }} {{ block.personNameLast }}">
+              {% endif %}
+              {% if block.socialLinks %}
+              <div class="links">
+                <h3>Links</h3>
+                {{ block.socialLinks }}
+              </div>            
+              {% endif %}
+            </div>
+          </div>
+        </div>
      </li>
     {% endfor %}
   </section>
@@ -37,7 +60,7 @@
     <h1>{{ entry.title }}</h1>
     <ul class="option-set clearfix smoothscroll">
       {% for block in entry.people %}
-        <li><a href="#{{ block.personName|kebab }}">{{ block.personName }}</a></li>
+        <li><a href="#{{ block.personNameFirst|kebab }}">{{ block.personNameFirst }}</a></li>
       {% endfor %}
     </ul>
   </section>

@@ -20,6 +20,7 @@ $.gdgr.main = (function() {
       tablet = false,
       adminStatus = false,
       isAnimating = false,
+      personClosing = false,
       cart,
       stripeCheckout,
       numLazyLoaded = 0;
@@ -33,6 +34,14 @@ $.gdgr.main = (function() {
         $(this).attr('title', '');
       }
     });
+
+    if (window.location.hash) {
+      // Open Person Bio if on the people page
+      if($('body').is('#people-page')) {        
+        var $person = $(window.location.hash);
+        _openPerson($person);
+      }
+    }
 
     // Localstorage cart
     cart = Modernizr.localstorage && localStorage.getItem('Fb.cartWithShipping') ? JSON.parse(localStorage.getItem('Fb.cartWithShipping')) : {items:[],shipping:{type:'US',cost:8,quantity:1}};
@@ -48,16 +57,11 @@ $.gdgr.main = (function() {
     $(document).keyup(function(e) {
       if (e.keyCode == 27) {
         _hideSidebar();
+        if ($('.person.active').length) {
+          _closePerson();
+        }
       }
     });
-
-    // Scroll down to hash after page load
-    // $(window).load(function() {
-    //   if (window.location.hash) {
-    //     var el = $(window.location.hash);
-    //     if (el.length) _scrollBody(el);
-    //   }
-    // });
 
     // Homepage
     if ($('#work-page.index').length) {
@@ -85,6 +89,10 @@ $.gdgr.main = (function() {
     _hideHeader();
     _initFilterNav();
     _initSmoothScroll();
+
+    if ($('body').is('#people-page')) {
+      _initPeopleFunctions();
+    }
   };
 
   function _newsletterInit() {
@@ -284,6 +292,83 @@ $.gdgr.main = (function() {
         $('.lazy').trigger('appear');
       }
     }
+  }
+
+  function _initPeopleFunctions() {
+    var $people = $('.person');
+    var peopleCount = $people.length;
+    var midpoint = peopleCount / 2;
+    var offset = 44;
+
+    $people.each(function(i) {
+      // Hover Image Positioning
+      var $hoverImage = $(this).find('.hover-image');
+      var personNumber = i + 1;
+      var interval;
+
+      if (personNumber <= midpoint) {
+        interval = 50 + 50 * (i / midpoint - 1);
+        $hoverImage.css({
+          'top': -offset,
+          'transform': 'translateY(-'+interval+'%)'
+        });
+      } else if (personNumber >= midpoint) {
+        interval = 50 - 50 * (i / (peopleCount - 1));
+        $hoverImage.css({
+          'bottom': -offset,
+          'transform': 'translateY('+interval+'%)'
+        });
+      }
+    });
+
+    // Add the Close Button
+    $people.each(function() {
+      $(this).find('.person-body').append('<button type="button" class="person-close tcon tcon-no-animate tcon-menu--xcross xcross-open"><span class="tcon-menu__lines" aria-hidden="true"></span></button>');
+    });
+
+    $('html, body').on('click', '.person-close', _closePerson);
+    
+    function checkForPersonClosing($person) {
+      if (personClosing == false) {
+        _openPerson($person);
+      } else {
+        setTimeout(function() {
+          checkForPersonClosing($person);
+        }, 50);
+      }
+    }
+
+    // Accordion functionality
+    $('.person-toggle').on('click', function() {
+      var $person = $(this).closest('.person');
+
+      // Close another open person
+      if ($('.person').not($person).is('.active')) {
+        _closePerson();
+        checkForPersonClosing($person);
+      } else {
+        _openPerson($person);
+      }
+    });
+  }
+
+  function _closePerson() {
+    personClosing = true;
+    $('.person.active .person-body')
+      .velocity('fadeOut', {duration: 300, queue: false})
+      .velocity('slideUp', {
+        duration: 300,
+        complete: function(elements) { personClosing = false }
+    });
+    $('.person.active').removeClass('active');
+  }
+
+  function _openPerson($person) {
+    _scrollBody($person, 300);
+    $person.addClass('active');
+    $person.find('.person-body')
+      .velocity('fadeIn', {duration: 500, queue: false})
+      .velocity('slideDown', {duration: 500});
   }
 
   function _initLazyload() {

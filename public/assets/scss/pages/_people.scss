@@ -6,44 +6,145 @@
   }
 
   .interior {
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .person {
-    display: flex;
-    flex-wrap: wrap;
-    &:nth-of-type(even) {
-      @include min-screen($breakpoint-large) {
-        .bio {
-          order: 1;
+    margin: 0;
+    position: relative;
+    transition: margin .2s ease-out;
+
+    .toggle-container {
+      opacity: 1;
+      padding: 0 25px;
+      position: relative;
+      display: inline-block;
+      transition: opacity .2s ease-out .3s;
+      &:hover {
+        z-index: 2;
+      }
+    }
+    .person-toggle {
+      z-index: 1;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      appearance: none;
+      background: none;
+      position: relative;
+      &:focus {
+        outline: none;
+      }
+      span {
+        display: inline-block;
+      }
+      .name {
+        @extend %title;
+        font-size: 32px;
+        position: relative;
+        margin-right: #{$padding * 2};
+        &::after {
+          left: 0;
+          bottom: 2px;
+          content: '';
+          height: 2px;
+          width: 100%;
+          position: absolute;
+          background: $black;
         }
-        .portrait {
-          order: 0;
+      }
+      .tagline {
+        @extend %small-caps;
+      }
+
+      @include min-screen($breakpoint-medium) {      
+        &:hover {
+          .name,
+          .tagline {
+            color: $white;
+          }
+          .name::after {
+            background: $white;
+          }
+          & + img {
+            display: inline-block;
+          }
         }
       }
     }
-    .bio {
-      order: 1;
-      flex-basis: 100%;
-      padding: ($padding * 3) 25px;
-      header {
-        padding-bottom: ($padding * 2);
+    .hover-image {
+      height: auto;
+      width: 600px;
+      display: none;
+      max-width: 600px;
+      position: absolute;
+      left: #{$padding * 16};
+    }
+
+    // Close Button
+    .person-close {
+      top: 25px;
+      left: 25px;
+      display: none;
+      transition: none;
+      position: absolute;
+      .tcon-menu__lines {
+        &::before,
+        &::after {
+          background-color: $yellow;
+        }
       }
+    }
+
+    .person-body {
+      opacity: 0;
+      display: none;
+      position: relative;
+      background: $white;
+      transition: opacity .5s ease-out;
+
+      .bio {
+        padding: ($padding * 3) 25px;
+      }
+
       h1 {
+        line-height: 1;
         font-size: 36px;
         margin-bottom: 11px;
       }
       h2 {
+        color: $black-fade;
         margin-bottom: ($padding * 2);
-        color: $black;
       }
       .links {
-        @extend %small-caps;
+        color: $yellow;
+        background: $black;
+        padding: ($padding * 4) 25px;
+        h3 {
+          @extend %title;
+          @extend %smooth;
+          margin: 0 0 .6em;
+          position: relative;
+          padding-bottom: .5em;
+          &:after {
+            left: 0;
+            bottom: 0;
+            content: '';
+            height: 1px;
+            width: .25em;
+            position: absolute;
+            background: $yellow;
+          }
+        }
+        p, a {
+          color: $yellow;
+          @extend %small-caps;
+        }
         a {
-          color: $black-fade;
-          transition: color .2s ease-out;
+          opacity: .4;
           &:hover, &:focus, &:active {
-            color: $black;
+            opacity: 1;
           }
         }
       }
@@ -54,30 +155,69 @@
           margin-top: 0;
         }
       }
+      .-right {
+        img {
+          display: none;
+        }
+      }
     }
-    .portrait {
-      order: 0;
-      padding: 0;
-      width: 100%;
-      height: 550px;
-      max-height: 50vh;
-      flex-basis: 100%;
-      background-size: cover;
-      background-position: center center;
-    }
-
-    // Specific people edits
-    &.will-miller, &.shannon-medic-young {
-      .portrait {
-        background-position: top center;
+    &.active {
+      margin: 0 0 50px;
+      .toggle-container {
+        opacity: 0;
+        pointer-events: none;
+        transition: opactiy .2s ease-out;
+      }
+      .person-close {
+        display: block;
+      }
+      .person-body {
+        opacity: 1;
       }
     }
 
-    @include min-screen($breakpoint-small) {
-      .bio {
-        padding: ($padding * 6);
-        header {
-          padding-bottom: ($padding * 4);
+    @include min-screen($breakpoint-medium) {
+      .toggle-container {
+        padding: 0 #{$padding * 12};
+        .name {
+          font: 48px/1.145833333em $font-display;
+          letter-spacing: -.01em;          
+        }
+      }
+
+      .person-close {
+        top: #{$padding * 12};
+        left: #{$padding * 6};
+        transform: translate(-50%, 10px);
+        .tcon-menu__lines {
+          &::before,
+          &::after {
+            background-color: $black;
+          }
+        }
+      }
+
+      .person-body {
+        .mobile-portrait {
+          display: none;
+        }
+        .inner {
+          display: flex;
+        }
+        .-left,
+        .-right {
+          max-width: 50%;
+          flex-basis: 50%;
+        } 
+        .-right {
+          background: $black;
+          img {
+            display: block;
+          }
+        }
+        .bio,
+        .links {
+          padding: ($padding * 12);
         }
         h1 {
           font: 48px/1.145833333em $font-display;
@@ -89,17 +229,9 @@
 
       }
     }
-
     @include min-screen($breakpoint-large) {
-      .bio {
-        order: 0;
-        flex-basis: 50%;
-        padding: ($padding * 12);
-      }
       .portrait {
-        order: 1;
         height: auto;
-        flex-basis: 50%;
         max-height: none;
       }
     }
