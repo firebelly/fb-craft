@@ -326,44 +326,30 @@ $.gdgr.main = (function() {
       $(this).find('.person-body').append('<button type="button" class="person-close tcon tcon-no-animate tcon-menu--xcross xcross-open"><span class="tcon-menu__lines" aria-hidden="true"></span></button>');
     });
 
-    $('html, body').on('click', '.person-close', _closePerson);
-    
-    function checkForPersonClosing($person) {
-      if (personClosing == false) {
-        _openPerson($person);
-      } else {
-        setTimeout(function() {
-          checkForPersonClosing($person);
-        }, 50);
-      }
-    }
+    $('.person-close').on('click', _closePerson);
 
     // Accordion functionality
     $('.person-toggle').on('click', function() {
       var $person = $(this).closest('.person');
-
-      // Close another open person
-      if ($('.person').not($person).is('.active')) {
-        _closePerson();
-        checkForPersonClosing($person);
-      } else {
-        _openPerson($person);
-      }
+      _openPerson($person);
     });
 
     // Open a person from the sidebar
     $('#filters a').on('click', function(e) {
       e.preventDefault();
       var $person = $($(this).attr('href'));
-      
-      // Close another open person
-      if ($('.person').not($person).is('.active')) {
-        _closePerson();
-        checkForPersonClosing($person);
-      } else {
-        _openPerson($person);
-      }
+      _openPerson($person);
     });
+  }
+
+  function _checkForPersonClosing($person) {
+    if (personClosing == false) {
+      _expandPerson($person);
+    } else {
+      setTimeout(function() {
+        _checkForPersonClosing($person);
+      }, 50);
+    }
   }
 
   function _closePerson() {
@@ -375,9 +361,23 @@ $.gdgr.main = (function() {
         complete: function(elements) { personClosing = false }
     });
     $('.person.active').removeClass('active');
+    if (window.location.hash) {
+      history.pushState({}, document.title, window.location.pathname);
+    }
   }
 
   function _openPerson($person) {
+    // Close another open person
+    if ($('.person').not($person).is('.active')) {
+      _closePerson(true);
+      _checkForPersonClosing($person);
+    } else {
+      _expandPerson($person);
+    }
+  }
+
+  function _expandPerson($person) {
+    personId = '#' + $person.attr('id');
     _scrollBody($person, 300);
     $person.addClass('active');
     $person.find('.person-body')
