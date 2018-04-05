@@ -107,6 +107,7 @@
         }
       }
       .tagline {
+        display: block;
         @extend %small-caps;
       }
       .duplicate-title {
@@ -134,6 +135,10 @@
           & + .hover-image {
             opacity: 1;
           }
+        }
+
+        .tagline {
+          display: inline-block;
         }
       }
     }
