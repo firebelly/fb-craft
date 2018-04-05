@@ -319,6 +319,10 @@ $.gdgr.main = (function() {
           'transform': 'translateY('+interval+'%)'
         });
       }
+
+      // Duplicate The Name to create a split color effect
+      var $duplicateTitle = $(this).find('.person-toggle .inner').clone().appendTo($(this).find('.person-toggle'));
+      $duplicateTitle.addClass('duplicate-title').attr('aria-hidden', "true");
     });
 
     // Add the Close Button

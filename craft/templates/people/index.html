@@ -14,42 +14,58 @@
 {% block content %}
   {% cache unless currentUser %}
   <section class="content interior grid">
-    {% for block in entry.people %}
-      {% set image = block.photo.last() %}
-      <li class="page user-content clearfix person" id="{{ block.personNameFirst|kebab }}-{{ block.personNameLast|kebab }}">
-        <div class="toggle-container">
-          <button class="person-toggle"><span class="name">{{ block.personNameFirst }}</span> <span class="tagline">{{ block.tagline }}</span></button>
-          {% if image|length %}
-            <img class="hover-image" src="{{ craft.config.cdnUrl }}{{ image.getUrl(mobile) }}" alt="{{ block.personNameFirst }} {{ block.personNameLast }}">
-          {% endif %}
+
+    <div class="intro clearfix">
+      <div class="-inner">
+        <header class="section-title">
+          <h1>{{ entry.title }}</h1>
+        </header>
+        <div class="summary">
+          {{ entry.body }}
         </div>
-        <div class="person-body clearfix">
-          {% if image|length %}
-            <img class="mobile-portrait" src="{{ craft.config.cdnUrl }}{{ image.getUrl(mobile) }}" alt="{{ block.personNameFirst }} {{ block.personNameLast }}">
-          {% endif %}
-          <div class="inner">
-            <div class="bio -left">          
-              <h1>{{ block.personNameFirst }} {{ block.personNameLast }}</h1>
-              {% if block.personTitle %}
-                <h2>{{ block.personTitle }}</h2>
-              {% endif %}
-              {{ block.bio }}
-            </div>
-            <div class="-right">
-              {% if image|length %}
-                <img src="{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}" alt="{{ block.personNameFirst }} {{ block.personNameLast }}" title="{{ block.personNameFirst }} {{ block.personNameLast }}">
-              {% endif %}
-              {% if block.socialLinks %}
-              <div class="links">
-                <h3>Links</h3>
-                {{ block.socialLinks }}
-              </div>            
-              {% endif %}
+        {# <%= render :partial => '/shared/edit_bug', :locals => { :obj => @page, :edit_path => refinery.admin_edit_page_path(@page) }%> #}
+      </div>
+    </div>
+
+    <ul class="people-list">    
+      {% for block in entry.people %}
+        {% set image = block.photo.last() %}
+        <li class="page user-content clearfix person" id="{{ block.personNameFirst|kebab }}-{{ block.personNameLast|kebab }}">
+          <div class="toggle-container">
+            <button class="person-toggle"><span class="inner"><span class="name">{{ block.personNameFirst }}</span> <span class="tagline">{{ block.tagline }}</span></span></span></button>
+            {% if image|length %}
+              <img class="hover-image" src="{{ craft.config.cdnUrl }}{{ image.getUrl(mobile) }}" alt="{{ block.personNameFirst }} {{ block.personNameLast }}">
+            {% endif %}
+          </div>
+          <div class="person-body clearfix">
+            {% if image|length %}
+              <img class="mobile-portrait" src="{{ craft.config.cdnUrl }}{{ image.getUrl(mobile) }}" alt="{{ block.personNameFirst }} {{ block.personNameLast }}">
+            {% endif %}
+            <div class="inner">
+              <div class="bio -left">          
+                <h1>{{ block.personNameFirst }} {{ block.personNameLast }}</h1>
+                {% if block.personTitle %}
+                  <h2>{{ block.personTitle }}</h2>
+                {% endif %}
+                {{ block.bio }}
+              </div>
+              <div class="-right">
+                {% if image|length %}
+                  <div class="desktop-portrait" style="background-image:url('{{ craft.config.cdnUrl }}{{ image.getUrl('hero') }}');"></div>
+                {% endif %}
+                {% if block.socialLinks %}
+                <div class="links">
+                  <h3>Links</h3>
+                  {{ block.socialLinks }}
+                </div>            
+                {% endif %}
+              </div>
             </div>
           </div>
-        </div>
-     </li>
-    {% endfor %}
+       </li>
+      {% endfor %}
+    </ul>
+
   </section>
   {% endcache %}
 {% endblock %}

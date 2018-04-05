@@ -6,8 +6,38 @@
   }
 
   .interior {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
+  }
+
+  .content {
+    > .intro {
+      width: 100%;
+      margin-bottom: 0;
+      text-align: center;
+      padding: ($padding * 6) 25px;
+      .-inner {
+        margin: 0 auto;
+      }
+      .section-title {
+        text-align: center;
+      }
+      .summary p {
+        color: $black;
+        @extend %small-caps;
+      }
+
+      @include min-screen($breakpoint-medium) {
+        padding: ($padding * 12);
+      }
+    }
+  }
+
+  .people-list {
+    padding: #{$padding * 6} 0;
+    background: lighten($yellow, 8%);
+    @include min-screen($breakpoint-medium) {
+      padding: #{$padding * 12} 0;
+    }
   }
 
   .person {
@@ -57,19 +87,30 @@
       .tagline {
         @extend %small-caps;
       }
+      .duplicate-title {
+        left: 44px;
+        width: 100%;
+        display: none;
+        overflow: hidden;
+        text-indent: -22px;
+        position: absolute;
+        color: lighten($yellow, 6%);
+        .name::after {
+          background: lighten($yellow, 6%);
+        }
+        .tagline {
+          text-indent: 0;
+        }
+      }
 
       @include min-screen($breakpoint-medium) {      
         &:hover {
-          .name,
-          .tagline {
-            color: $white;
+          .duplicate-title {
+            display: inline-block;
           }
-          .name::after {
-            background: $white;
-          }
-          & + img {
+
+          & + .hover-image {
             opacity: 1;
-            transition: opacity .2s ease-out;
           }
         }
       }
@@ -82,7 +123,6 @@
       position: absolute;
       pointer-events: none;
       left: #{$padding * 16};
-      transition: opacity .3s ease-out;
     }
 
     // Close Button
@@ -117,7 +157,7 @@
         margin-bottom: 11px;
       }
       h2 {
-        color: $black-fade;
+        color: $black;
         margin-bottom: ($padding * 2);
       }
       .links {
@@ -163,6 +203,22 @@
           display: none;
         }
       }
+      // Hide this on small screen as to avoid downloading the full-size image until needed
+      .desktop-portrait {
+        height: 0;
+        width: 100%;
+        padding-bottom: 66.66%;
+        background-size: cover;
+        background-position: top center;
+        @include max-screen($breakpoint-medium - 1) {
+          display: none;
+          background-image: none;
+        }
+        @include min-screen($breakpoint-medium) {
+          display: block;
+        }
+      }
+
     }
     &.active {
       margin: 0 0 50px;
