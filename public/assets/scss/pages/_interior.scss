@@ -34,7 +34,7 @@ body.page.single {
           padding-left: 0;
         }
       }
-      
+
       .secondary {
         .secondary-item {
           h3 {
@@ -42,6 +42,9 @@ body.page.single {
             &:first-of-type {
               margin-top: 0;
             }
+          }
+          li {
+            list-style: none;
           }
         }
       }
