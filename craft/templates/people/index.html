@@ -26,28 +26,17 @@
         {# <%= render :partial => '/shared/edit_bug', :locals => { :obj => @page, :edit_path => refinery.admin_edit_page_path(@page) }%> #}
       </header>
 
+      {% for block in entry.secondaryPageHeaderContent %}
       <div class="filters one-half -right">
         <div class="one-half -left">
-          <h3>Skills</h3>
-          <ul>
-            <li>Strategy</li>
-            <li>Design</li>
-            <li>Development</li>
-            <li>Accounts</li>
-          </ul>
+          {{ block.leftColumnContent }}
         </div>
 
         <div class="one-half -right">
-          <h3>Thrills</h3>
-          <ul>
-            <li>Plant Care</li>
-            <li>Animal Rescue</li>
-            <li>Human Rights</li>
-            <li>Positive Thought</li>
-            <li>Conscious Action</li>
-          </ul>
+          {{ block.rightColumnContent }}
         </div>
       </div>
+      {% endfor %}
     </div>
 
     <ul class="people-list">    
