@@ -60,6 +60,16 @@ $.gdgr.main = (function() {
         if ($('.person.active').length) {
           _closePerson();
         }
+      } else if (e.keyCode == 37 || e.keyCode == 38) {
+        // Previous Person
+        if ($('.person.active').length) {
+          _peopleNavigation('previous');
+        }
+      } else if (e.keyCode == 39 || e.keyCode == 40) {
+        // Next Person
+        if ($('.person.active').length) {
+          _peopleNavigation('next');
+        }
       }
     });
 
@@ -378,6 +388,28 @@ $.gdgr.main = (function() {
     } else {
       _expandPerson($person);
     }
+  }
+
+  function _peopleNavigation(direction) {
+    var $people = $('.person');
+    var $activePerson = $('.person.active');
+    var $person;
+
+    if (direction === 'previous') {
+      if ($activePerson.prev('.person').length) {
+        $person = $activePerson.prev('.person');
+      } else {
+        $person = $($people[$people.length - 1]);
+      }
+    } else if (direction === 'next') {
+      if ($activePerson.next('.person').length) {
+        $person = $activePerson.next('.person');
+      } else {
+        $person = $($people[0]);
+      }
+    }
+
+    _openPerson($person);
   }
 
   function _expandPerson($person) {
