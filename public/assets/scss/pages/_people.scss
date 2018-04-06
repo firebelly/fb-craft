@@ -146,10 +146,14 @@
       opacity: 0;
       height: auto;
       width: 600px;
+      display: none;
       max-width: 600px;
       position: absolute;
       pointer-events: none;
       left: #{$padding * 16};
+      @include min-screen($breakpoint-medium) {
+        display: block;
+      }
     }
 
     // Close Button
