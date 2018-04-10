@@ -29,7 +29,11 @@
         <div class="intro one-half -left clearfix">
           <div class="-inner">
             <header class="section-title">
-              <h1>{{ block.pageSectionTitle }}.</h1>
+              {% if block.sectionNumber %}
+              <h1><span class="section-number">{{ block.sectionNumber }} </span>{{ block.pageSectionTitle }}</h1>
+              {% else %}
+              <h1>{{ block.pageSectionTitle }}</h1>
+              {% endif %}
             </header>
             <div class="summary">
               {{ block.pageSectionDescription }}
