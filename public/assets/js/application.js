@@ -20,6 +20,7 @@ $.gdgr.main = (function() {
       tablet = false,
       adminStatus = false,
       isAnimating = false,
+      personClosing = false,
       cart,
       stripeCheckout,
       numLazyLoaded = 0;
@@ -33,6 +34,14 @@ $.gdgr.main = (function() {
         $(this).attr('title', '');
       }
     });
+
+    if (window.location.hash) {
+      // Open Person Bio if on the people page
+      if($('body').is('#people-page')) {        
+        var $person = $(window.location.hash);
+        _openPerson($person);
+      }
+    }
 
     // Localstorage cart
     cart = Modernizr.localstorage && localStorage.getItem('Fb.cartWithShipping') ? JSON.parse(localStorage.getItem('Fb.cartWithShipping')) : {items:[],shipping:{type:'US',cost:8,quantity:1}};
@@ -48,16 +57,21 @@ $.gdgr.main = (function() {
     $(document).keyup(function(e) {
       if (e.keyCode == 27) {
         _hideSidebar();
+        if ($('.person.active').length) {
+          _closePerson();
+        }
+      } else if (e.keyCode == 37 || e.keyCode == 38) {
+        // Previous Person
+        if ($('.person.active').length) {
+          _peopleNavigation('previous');
+        }
+      } else if (e.keyCode == 39 || e.keyCode == 40) {
+        // Next Person
+        if ($('.person.active').length) {
+          _peopleNavigation('next');
+        }
       }
     });
-
-    // Scroll down to hash after page load
-    // $(window).load(function() {
-    //   if (window.location.hash) {
-    //     var el = $(window.location.hash);
-    //     if (el.length) _scrollBody(el);
-    //   }
-    // });
 
     // Homepage
     if ($('#work-page.index').length) {
@@ -85,6 +99,10 @@ $.gdgr.main = (function() {
     _hideHeader();
     _initFilterNav();
     _initSmoothScroll();
+
+    if ($('body').is('#people-page')) {
+      _initPeopleFunctions();
+    }
   };
 
   function _newsletterInit() {
@@ -284,6 +302,123 @@ $.gdgr.main = (function() {
         $('.lazy').trigger('appear');
       }
     }
+  }
+
+  function _initPeopleFunctions() {
+    var $people = $('.person');
+    var peopleCount = $people.length;
+    var midpoint = peopleCount / 2;
+    var offset = 44;
+
+    $people.each(function(i) {
+      // Hover Image Positioning
+      var $hoverImage = $(this).find('.hover-image');
+      var personNumber = i + 1;
+      var interval;
+
+      if (personNumber <= midpoint) {
+        interval = 50 + 50 * (i / midpoint - 1);
+        $hoverImage.css({
+          'top': -offset,
+          'transform': 'translateY(-'+interval+'%)'
+        });
+      } else if (personNumber >= midpoint) {
+        interval = 50 - 50 * (i / (peopleCount - 1));
+        $hoverImage.css({
+          'bottom': -offset,
+          'transform': 'translateY('+interval+'%)'
+        });
+      }
+
+      // Duplicate The Name to create a split color effect
+      var $duplicateTitle = $(this).find('.person-toggle .inner').clone().appendTo($(this).find('.person-toggle'));
+      $duplicateTitle.addClass('duplicate-title').attr('aria-hidden', "true");
+    });
+
+    // Add the Close Button
+    $people.each(function() {
+      $(this).find('.person-body').append('<button type="button" class="person-close tcon tcon-no-animate tcon-menu--xcross xcross-open"><span class="tcon-menu__lines" aria-hidden="true"></span></button>');
+    });
+
+    $('.person-close').on('click', _closePerson);
+
+    // Accordion functionality
+    $('.person-toggle').on('click', function() {
+      var $person = $(this).closest('.person');
+      _openPerson($person);
+    });
+
+    // Open a person from the sidebar
+    $('#filters a').on('click', function(e) {
+      e.preventDefault();
+      var $person = $($(this).attr('href'));
+      _openPerson($person);
+    });
+  }
+
+  function _checkForPersonClosing($person) {
+    if (personClosing == false) {
+      _expandPerson($person);
+    } else {
+      setTimeout(function() {
+        _checkForPersonClosing($person);
+      }, 50);
+    }
+  }
+
+  function _closePerson() {
+    personClosing = true;
+    $('.person.active .person-body')
+      .velocity('fadeOut', {duration: 300, queue: false})
+      .velocity('slideUp', {
+        duration: 300,
+        complete: function(elements) { personClosing = false }
+    });
+    $('.person.active').removeClass('active');
+    if (window.location.hash) {
+      history.pushState({}, document.title, window.location.pathname);
+    }
+  }
+
+  function _openPerson($person) {
+    // Close another open person
+    if ($('.person').not($person).is('.active')) {
+      _closePerson(true);
+      _checkForPersonClosing($person);
+    } else {
+      _expandPerson($person);
+    }
+  }
+
+  function _peopleNavigation(direction) {
+    var $people = $('.person');
+    var $activePerson = $('.person.active');
+    var $person;
+
+    if (direction === 'previous') {
+      if ($activePerson.prev('.person').length) {
+        $person = $activePerson.prev('.person');
+      } else {
+        $person = $($people[$people.length - 1]);
+      }
+    } else if (direction === 'next') {
+      if ($activePerson.next('.person').length) {
+        $person = $activePerson.next('.person');
+      } else {
+        $person = $($people[0]);
+      }
+    }
+
+    _openPerson($person);
+  }
+
+  function _expandPerson($person) {
+    personId = '#' + $person.attr('id');
+    _scrollBody($person, 300);
+    $person.addClass('active');
+    $person.find('.person-body')
+      .velocity('fadeIn', {duration: 500, queue: false})
+      .velocity('slideDown', {duration: 500});
   }
 
   function _initLazyload() {

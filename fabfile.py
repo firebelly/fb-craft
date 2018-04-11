@@ -3,9 +3,9 @@ import os
 
 env.hosts = ['craft.firebelly.co']
 env.user = 'firebelly'
-env.path = '/Users/nate/Sites/fb-craft'
+env.path = '/Users/developer/Sites/fb-craft'
 env.remotepath = '/home/firebelly/webapps/fb_craft'
-env.git_branch = 'master'
+env.git_branch = 'people-refresh-2018'
 env.warn_only = True
 env.remote_protocol = 'http'
 
@@ -13,6 +13,7 @@ def production():
   env.hosts = ['www.firebellydesign.com']
   env.user = 'deployer'
   env.remotepath = '/var/www/fb-craft/'
+  env.git_branch = 'master'
   env.remote_protocol = 'https'
   # env.user = 'firebelly'
   # env.remotepath = '/home/firebelly/webapps/fb_craft'
